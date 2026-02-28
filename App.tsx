@@ -1,28 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import RootNavigator from '@/navigation/RootNavigator';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { setupInterceptors } from '@/services/api/interceptors';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from '@/redux/store';
+import GlobalLoading from '@/screens/loading';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-
+setupInterceptors();
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';  
-
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SafeAreaProvider>
+              <KeyboardProvider>
+                <>
+                  <RootNavigator />
+                  <GlobalLoading />
+                  <Toast position="top" topOffset={65} visibilityTime={2000} />
+                </>
+              </KeyboardProvider>
+            </SafeAreaProvider>
+          </PersistGate>
+        </Provider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
