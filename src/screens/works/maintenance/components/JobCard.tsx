@@ -5,12 +5,12 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
 import { Detail } from '@/services/workRepair';
 import moment from 'moment';
-import { getSateItem } from '@/utils/stateWork';
+import { getSateColor, getSateItem } from '@/utils/stateWork';
 import SizeBox from '@/components/SizeBox';
 
 type Props = {
   item: Detail;
-  onPressAssignWork: () => void;
+  onPressAssignWork: (id: any) => void;
 };
 
 export const JobCard = (props: Props) => {
@@ -62,6 +62,9 @@ export const JobCard = (props: Props) => {
           <Info
             label="TRẠNG THÁI"
             value={getSateItem({ state: item?.state?.state })}
+            color={getSateColor({
+              state: item?.state?.state ?? '',
+            })}
           />
           <Info label="VỊ TRÍ" value={item.mro_location_id.name} />
         </View>
@@ -69,7 +72,9 @@ export const JobCard = (props: Props) => {
         {item?.state?.state === 'tp_gv' && (
           <TouchableOpacity
             style={styles.assignBtn}
-            onPress={onPressAssignWork}
+            onPress={() => {
+              onPressAssignWork(item.id);
+            }}
           >
             <Text style={{ color: '#fff', fontWeight: '700' }}>Giao việc</Text>
           </TouchableOpacity>
@@ -79,9 +84,9 @@ export const JobCard = (props: Props) => {
   );
 };
 
-const Info = ({ label, value }: any) => (
+const Info = ({ label, value, color }: any) => (
   <View style={{ flex: 1 }}>
     <Text style={styles.labelSmall}>{label}</Text>
-    <Text style={{ fontSize: 12, fontWeight: '600' }}>{value}</Text>
+    <Text style={{ fontSize: 12, fontWeight: '600', color }}>{value}</Text>
   </View>
 );

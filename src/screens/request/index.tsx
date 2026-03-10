@@ -3,6 +3,7 @@ import { PRIMARY } from '@/utils/color';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
 import RequestListScreen from './repairRequest';
+import ReportProblemScreen from './reportProblem';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -11,6 +12,7 @@ const RequestTopTabs = () => {
     <BasePage paddingHorizontal={0} title="Danh Sách Yêu Cầu">
       <Tab.Navigator
         screenOptions={{
+          lazy: true,
           swipeEnabled: false,
           tabBarActiveTintColor: PRIMARY,
           tabBarInactiveTintColor: 'gray',
@@ -21,7 +23,7 @@ const RequestTopTabs = () => {
       >
         <Tab.Screen
           name={'ReportProblem'}
-          component={RequestListScreen}
+          component={ReportProblemScreen}
           options={{
             title: 'Báo sự cố',
             tabBarLabelStyle: {

@@ -18,13 +18,13 @@ function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <SafeAreaProvider>
-              <KeyboardProvider>
+              <KeyboardProvider navigationBarTranslucent>
                 <>
                   <RootNavigator />
                   <GlobalLoading />
                   <Toast position="top" topOffset={65} visibilityTime={2000} />
                 </>
-              </KeyboardProvider>
+              </KeyboardProvider >
             </SafeAreaProvider>
           </PersistGate>
         </Provider>

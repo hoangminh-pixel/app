@@ -1,147 +1,165 @@
+import { AppFlatList } from '@/components/AppFlatList';
+import SizeBox from '@/components/SizeBox';
+import { getSateColor, getSateItem } from '@/utils/stateWork';
 import Icon from '@react-native-vector-icons/material-icons';
+import moment from 'moment';
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  SafeAreaView,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import { RootRequest } from '../types';
+import useRepairRequest from './hooks/useRepairRequest';
 import { styles } from './styles';
-
-const DATA = [
-  {
-    id: '1',
-    title: 'Sửa máy thổi khí',
-    code: 'TB8000001',
-    system: 'Xử lý nước thải',
-    approver: 'Nguyễn Văn A',
-    date: '24/10/2023',
-    status: 'Chờ duyệt',
-    priority: 'Khẩn cấp',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCu4wqoyu8gUWDafcgXrqoe2JAZnFKIuTzSiu2OpcWHSZ7PpwtKL3UVgpSwcg1WATckTrEuEB2A3C1reiQ7q1jJpVGx6d-rEF3uHDGIXXVGvOJc9QDgYEpAVCNKWmrfbM6Eh8DFzn7ZMAGjO0hFdazfvIdTbaoOIuf5Te7S4DmcCsG7r9qKicGSOze4x7P19sBu76g3J7_QQuG8FSS5Imaxe92KIdV5OtflKezQUM2UtgaIy4sthyoy2LtYPC1pO1BufiKUCza-kMq9',
-  },
-  {
-    id: '2',
-    title: 'Bảo trì máy bơm',
-    code: 'TB8000002',
-    system: 'Cấp nước',
-    approver: 'Trần Thị B',
-    date: '23/10/2023',
-    status: 'Đang xử lý',
-    priority: 'Bình thường',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC8U0zE_ld2ayJCF4gWliPWwZU_nOIWOXPiWpHY3OZulWkeA_hCJINBVw3bVbfxD7sp04kO41P_VizFhTKuzbBAs9wJy_e4g9mKxzgI9u3VvmjulU6VHe9B4Fe4xFSfrT5YxRcOJICKR9OwPEMaYLPvw-ki7hg16hAZk8XlawYH1N8-_sEBLgmbt1Prvke9dRlq2dHuCTn31ZnrMfzn2XbedszSUF1GDHgUbaYi1jiK8MfD6Qiuxy0sIkZm_UA6zUeK5-5Cs6KP_ULL',
-  },
-  {
-    id: '3',
-    title: 'Bảo trì máy bơm',
-    code: 'TB8000002',
-    system: 'Cấp nước',
-    approver: 'Trần Thị B',
-    date: '23/10/2023',
-    status: 'Đang xử lý',
-    priority: 'Bình thường',
-    image: 'https://i.sstatic.net/y9DpT.jpg',
-  },
-];
-
-//
+import FabMenu from '@/components/FAB';
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
     case 'Khẩn cấp':
       return '#ef4444';
-    case 'Bình thường':
+    case 'Cao':
+      return '#ef4444';
+    case 'Trung bình':
       return '#3b82f6';
     default:
       return '#9ca3af';
   }
 };
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'Chờ duyệt':
-      return '#f59e0b';
-    case 'Đang xử lý':
-      return '#3f5cee';
-    case 'Hoàn thành':
-      return '#10b981';
-    default:
-      return '#6b7280';
-  }
-};
-
 export default function RequestListScreen() {
+  const {
+    listRequest,
+    loading,
+    refreshing,
+    handleRefresh,
+    handleLoadMore,
+    hasMore,
+    navigation,
+    handleReloadwhenBack,
+  } = useRepairRequest();
+
   return (
     <View style={styles.container}>
-      {/* LIST */}
-      <FlatList
-        data={DATA}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <RequestCard item={item} />}
+      <AppFlatList
+        data={listRequest}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }: { item: RootRequest }) => (
+          <Pressable
+            onPress={() => {
+              navigation.navigate('DetailRequestScreen', {
+                id: item.id,
+                onGoBack: handleReloadwhenBack,
+              });
+            }}
+          >
+            <RequestCard item={item} />
+          </Pressable>
+        )}
         contentContainerStyle={{ padding: 16 }}
+        onRefresh={handleRefresh}
+        onLoadMore={handleLoadMore}
+        loading={loading}
+        refreshing={refreshing}
+        hasMore={hasMore}
       />
 
-      {/* FAB */}
-      <Pressable style={styles.fab}>
-        <Icon name="add" size={28} color="white" />
-      </Pressable>
+      <FabMenu
+        onNavigateCreateRepair={() => {
+          navigation.navigate('CreateRepairRequestScreen', {
+            id: -1,
+            onGoBack: handleReloadwhenBack,
+          });
+        }}
+        onNavigateCreateIssue={() => {
+          navigation.navigate('CreateReportProbemScreen', {
+            id: -1,
+            onGoBack: async () => {},
+          });
+        }}
+      />
     </View>
   );
 }
 
-const RequestCard = ({ item }: any) => (
-  <View style={styles.card}>
-    <View>
-      <Image source={{ uri: item.image }} style={styles.image} />
+const RequestCard = ({ item }: { item: RootRequest }) => {
+  const file = item.list_image_request?.list_image_request?.[0];
+  const url = file?.image_url || '';
+  const isVideo = /\.(mp4|mov|avi|m4v)$/i.test(url);
+  return (
+    <View style={styles.card}>
+      <View>
+        {item.list_image_request.list_image_request &&
+        item.list_image_request.list_image_request.length > 0 &&
+        !isVideo ? (
+          <Image
+            source={{
+              uri: item.list_image_request.list_image_request[0].image_url,
+            }}
+            style={styles.image}
+          />
+        ) : (
+          <>{item?.priority?.priority && <SizeBox height={35} />}</>
+        )}
 
-      <View
-        style={[
-          styles.priorityBadge,
-          { backgroundColor: getPriorityColor(item.priority) },
-        ]}
-      >
-        <Text style={styles.priorityText}>{item.priority}</Text>
-      </View>
-    </View>
-
-    <View style={styles.cardContent}>
-      <View style={styles.rowBetween}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.code}>[{item.code}]</Text>
-      </View>
-
-      <InfoRow icon="settings" label="Hệ thống" value={item.system} />
-      <InfoRow icon="person" label="Người tạo" value={item.approver} />
-      <InfoRow icon="calendar-today" label="Ngày" value={item.date} />
-
-      <View style={styles.infoRow}>
-        <Icon name="info" size={16} color="#6b7280" />
-        <Text style={styles.infoText}>
-          Trạng thái:{' '}
-          <Text
-            style={{ color: getStatusColor(item.status), fontWeight: '700' }}
+        {item?.priority?.priority && (
+          <View
+            style={[
+              styles.priorityBadge,
+              { backgroundColor: getPriorityColor(item?.priority?.priority) },
+            ]}
           >
-            {item.status}
-          </Text>
-        </Text>
+            <Text style={styles.priorityText}>{item?.priority?.priority}</Text>
+          </View>
+        )}
       </View>
 
-      <Pressable style={styles.detailBtn}>
-        <Text style={styles.detailText}>Xem chi tiết</Text>
-      </Pressable>
+      <View style={styles.cardContent}>
+        <View style={styles.rowBetween}>
+          <Text style={styles.title}>{item?.asset_name?.asset_name}</Text>
+          <Text style={styles.code}>{item?.name?.name}</Text>
+        </View>
+
+        <InfoRow icon="settings" label="Hệ thống" value={item?.cause?.cause} />
+        <InfoRow
+          icon="person"
+          label="Người tạo"
+          value={item?.request_employee_id?.request_employee_id}
+        />
+        <InfoRow
+          icon="calendar-today"
+          label="Ngày"
+          value={moment(item?.execution_date?.execution_date).format(
+            'HH:mm DD/MM/YYYY',
+          )}
+        />
+
+        <View style={styles.infoRow}>
+          <Icon name="info" size={16} color="#6b7280" />
+          <Text style={styles.infoText}>
+            Trạng thái:{' '}
+            <Text
+              style={{
+                color: getSateColor({
+                  state: item?.state?.state ?? '',
+                }),
+                fontWeight: '700',
+              }}
+            >
+              {getSateItem({ state: item?.state?.state })}
+            </Text>
+          </Text>
+        </View>
+
+        <Pressable style={styles.detailBtn}>
+          <Text style={styles.detailText}>Xem chi tiết</Text>
+        </Pressable>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const InfoRow = ({ icon, value }: any) => (
   <View style={styles.infoRow}>
     <Icon name={icon} size={16} color="#6b7280" />
     <Text style={styles.infoText}>
-      <Text style={styles.bold}>{value}</Text>
+      <Text style={styles.bold}>{value ?? 'Không xác định'}</Text>
     </Text>
   </View>
 );

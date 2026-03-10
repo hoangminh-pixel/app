@@ -3,6 +3,7 @@ import { View, ActivityIndicator, StyleSheet, Modal } from 'react-native';
 import { useAppSelector } from '@/redux/store/hooks';
 import { AppText } from '@/components';
 import { PRIMARY } from '@/utils/color';
+import { ModalView } from 'react-native-multiple-modals';
 
 const GlobalLoading = () => {
   const { loading, loadingMessage } = useAppSelector(state => state.loading);
@@ -10,7 +11,13 @@ const GlobalLoading = () => {
   if (!loading) return null;
 
   return (
-    <Modal transparent visible>
+    <ModalView
+      statusBar={{ translucent: true, barStyle: 'dark-content' }}
+      backdropColor="rgba(126, 125, 125, 0.5)"
+      contentContainerStyle={{
+        width: '100%',
+      }}
+    >
       <View style={styles.overlay}>
         <View>
           <ActivityIndicator size="large" color={PRIMARY} />
@@ -19,7 +26,7 @@ const GlobalLoading = () => {
           )}
         </View>
       </View>
-    </Modal>
+    </ModalView>
   );
 };
 

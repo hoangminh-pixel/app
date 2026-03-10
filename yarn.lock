@@ -3287,7 +3287,9 @@ __metadata:
     prettier: 2.8.8
     react: 19.1.0
     react-native: 0.80.0
+    react-native-auto-skeleton: ^0.1.30
     react-native-gesture-handler: ^2.30.0
+    react-native-image-picker: ^8.2.1
     react-native-keyboard-controller: ^1.20.7
     react-native-modal: ^14.0.0-rc.1
     react-native-multiple-modals: ^3.3.0
@@ -3300,6 +3302,8 @@ __metadata:
     react-native-toast-message: ^2.3.3
     react-native-ui-datepicker: ^3.1.2
     react-native-vector-icons: ^10.3.0
+    react-native-video: ^6.17.0
+    react-native-vision-camera: ^4.7.3
     react-native-worklets: 0.7.0
     react-redux: ^9.2.0
     react-test-renderer: 19.1.0
@@ -8647,6 +8651,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-auto-skeleton@npm:^0.1.30":
+  version: 0.1.30
+  resolution: "react-native-auto-skeleton@npm:0.1.30"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 0d03e0061eb7a1600f0eea21af83f0ed6bf395b20e1535bdae93bc124ce23fde1ad20fbd5408bb97c60181ec69f99052fdb5abd86c723aa7669dca6e213ae000
+  languageName: node
+  linkType: hard
+
 "react-native-gesture-handler@npm:^2.30.0":
   version: 2.30.0
   resolution: "react-native-gesture-handler@npm:2.30.0"
@@ -8658,6 +8672,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 130a1cc04879ea11808472dbe2f4e346baca0cb52713279f3d4b5fbd397324bef2379f1f60bf0ce1763e12a8656267abb0e879418fb37c81fc6bbdcdb7fc797d
+  languageName: node
+  linkType: hard
+
+"react-native-image-picker@npm:^8.2.1":
+  version: 8.2.1
+  resolution: "react-native-image-picker@npm:8.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: fc85bc278c0ba5ccef8cbacfce3001e994b34b0895be34e0c884021d2215802c2e553c5e97ff7f21a30e502be60000f90cf9555e9c2a19c71fdc76120d30e158
   languageName: node
   linkType: hard
 
@@ -8839,6 +8863,36 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: 5c431fd9a8e6efd355e34ed28ca7fa7eed30e89362280cbd1e474e6d16148c6c37f5c950a525ec0b428c79dc74b9fb7a61171fc509b6ab253e111456f3e49b71
+  languageName: node
+  linkType: hard
+
+"react-native-video@npm:^6.17.0":
+  version: 6.19.0
+  resolution: "react-native-video@npm:6.19.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: fd320422b57e850d907a8db2849cbd695a0d33c55ce45b603ad5b3e4133f19cac49ffad24bb87e6fc53e472f53d2d5a6799b10969347d116db204a741f5959ea
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:^4.7.3":
+  version: 4.7.3
+  resolution: "react-native-vision-camera@npm:4.7.3"
+  peerDependencies:
+    "@shopify/react-native-skia": "*"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: "*"
+    react-native-worklets-core: "*"
+  peerDependenciesMeta:
+    "@shopify/react-native-skia":
+      optional: true
+    react-native-reanimated:
+      optional: true
+    react-native-worklets-core:
+      optional: true
+  checksum: e3abe484e4303d4fa9088e546e846642f4be503180ed24eaf74fc9e11c667cee779c5a9de4f27999dccb830ee60760badc641ee869fc6015e7ab7bec0f494f6d
   languageName: node
   linkType: hard
 

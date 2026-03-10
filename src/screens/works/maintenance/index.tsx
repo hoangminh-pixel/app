@@ -5,12 +5,12 @@ import { ModalDropdown } from '@/components/DropDown';
 import SizeBox from '@/components/SizeBox';
 import { Detail } from '@/services/workRepair';
 import React from 'react';
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, View } from 'react-native';
+import AssignWorkModal from './components/AssignWorkModal';
 import { FilterButton } from './components/FilterButton';
 import { JobCard } from './components/JobCard';
 import useMaintenance from './hooks/useMaintenance';
 import { styles } from './styles';
-import AssignWorkModal from './components/AssignWorkModal';
 
 export default function MaintanenceScreen() {
   const {
@@ -37,6 +37,19 @@ export default function MaintanenceScreen() {
     visibleAssignWorkModal,
     setVisibleAssignWorkModal,
     handleAssignWork,
+    dataDetailJob,
+    checkEmployee,
+    setCheckEmployee,
+    technicians,
+    setTechnicians,
+    techniciansWorkToo,
+    setCheckEmployeeWorkToo,
+    handleCloseModal,
+    handleAssignWorkInModal,
+    handleChangeFilterStatus,
+    dataMaintanenceFilter,
+    navigation,
+    handleReloadWhenBack,
   } = useMaintenance();
 
   return (
@@ -56,7 +69,6 @@ export default function MaintanenceScreen() {
           trailingIcon={'tune'}
           onPressTrailingIcon={() => setVisibleModalFilter(true)}
         />
-
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {selectionType.map(item => {
             return (
@@ -74,10 +86,20 @@ export default function MaintanenceScreen() {
       </View>
 
       <AppFlatList
-        data={dataMaintanence}
+        data={dataMaintanenceFilter}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }: { item: Detail }) => (
-          <JobCard item={item} onPressAssignWork={handleAssignWork} />
+          <Pressable
+            onPress={() => {
+              console.log('press item');
+              navigation.navigate('DetailMaintenanceScreen', {
+                id: item.id,
+                onGoBack: handleReloadWhenBack,
+              });
+            }}
+          >
+            <JobCard item={item} onPressAssignWork={handleAssignWork} />
+          </Pressable>
         )}
         contentContainerStyle={{ padding: 16 }}
         onRefresh={handleRefresh}
@@ -87,7 +109,7 @@ export default function MaintanenceScreen() {
         hasMore={hasMore}
       />
 
-      <Modal transparent visible={visible} animationType="fade">
+      <Modal transparent visible={visible}>
         <Pressable style={styles.overlay} onPress={() => setVisible(false)}>
           <View
             style={[styles.calendarContainer, { top: position.top, right: 10 }]}
@@ -105,7 +127,9 @@ export default function MaintanenceScreen() {
 
       <ModalDropdown
         options={STATUS_OPTIONS}
-        onChange={() => {}}
+        onChange={item => {
+          handleChangeFilterStatus(item?.id);
+        }}
         visible={visibleModalFilter}
         onVisible={() => {
           if (visibleModalFilter) {
@@ -119,6 +143,15 @@ export default function MaintanenceScreen() {
         isVisible={visibleAssignWorkModal}
         onAssign={() => {}}
         onCloseModal={() => setVisibleAssignWorkModal(false)}
+        dataItem={dataDetailJob}
+        checkEmployee={checkEmployee}
+        setCheckEmployee={setCheckEmployee}
+        technicians={technicians}
+        setTechnicians={setTechnicians}
+        techniciansWorkToo={techniciansWorkToo}
+        setCheckEmployeeWorkToo={setCheckEmployeeWorkToo}
+        handleCloseModal={handleCloseModal}
+        handleAssignWorkInModal={handleAssignWorkInModal}
       />
     </BasePage>
   );

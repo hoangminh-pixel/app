@@ -4,7 +4,7 @@ import { HomeScreen, LoginScreen } from '@/screens';
 import { HomeIcon } from '@/assets/icons';
 import MainStack from './MainStack';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
-import ReportScreen from '@/screens/report';
+import ReportScreen from '@/screens/request/createReportProblem';
 import RequestTopTabs from '@/screens/request';
 import WorkTopTabs from '@/screens/works';
 
@@ -56,11 +56,13 @@ const BottomTabNavigator = () => {
         },
       })}
     >
+      <Tab.Screen name="Task" component={WorkTopTabs} />
+      <Tab.Screen name="Report" component={RequestTopTabs} />
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Profile" component={LoginScreen} />
       <Tab.Screen name="Calendar" component={WorkTopTabs} />
-      <Tab.Screen name="Report" component={ReportScreen} />
-      <Tab.Screen name="Task" component={RequestTopTabs} />
+      <Tab.Screen name="Profile" component={LoginScreen} />
+
+      {/* <Tab.Screen name="Report" component={ReportScreen} /> */}
     </Tab.Navigator>
   );
 };

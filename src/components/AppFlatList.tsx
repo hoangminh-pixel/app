@@ -18,8 +18,12 @@ type Props<T> = {
   refreshing?: boolean;
   loading?: boolean;
   hasMore?: boolean;
+  ListHeaderComponent?: React.ReactElement;
   ListEmptyComponent?: React.ReactElement;
-  contentContainerStyle?: ViewStyle
+  contentContainerStyle?: ViewStyle;
+  style?: ViewStyle;
+
+  scrollEnabled?: boolean;
 };
 
 export function AppFlatList<T>({
@@ -32,7 +36,10 @@ export function AppFlatList<T>({
   loading = false,
   hasMore = false,
   ListEmptyComponent,
-  contentContainerStyle
+  ListHeaderComponent,
+  contentContainerStyle,
+  style,
+  scrollEnabled,
 }: Props<T>) {
   const onEndReachedCalledDuringMomentum = useRef(false);
 
@@ -45,16 +52,16 @@ export function AppFlatList<T>({
 
   return (
     <FlatList
+      style={style}
       data={data}
       renderItem={renderItem}
-      keyExtractor={
-        keyExtractor || ((_, index) => index.toString())
-      }
+      keyExtractor={keyExtractor || ((_, index) => index.toString())}
       refreshControl={
         onRefresh ? (
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         ) : undefined
       }
+      scrollEnabled={scrollEnabled}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.3}
       onMomentumScrollBegin={() => {
@@ -68,16 +75,22 @@ export function AppFlatList<T>({
         ) : null
       }
       showsVerticalScrollIndicator={false}
+      ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={
-        !loading && data?.length === 0 ? (
-          ListEmptyComponent || (
-            <View style={styles.empty}>
-              <Text>Không có dữ liệu</Text>
-            </View>
-          )
-        ) : null
+        !loading && data?.length === 0
+          ? ListEmptyComponent || (
+              <View style={styles.empty}>
+                <Text>Không có dữ liệu</Text>
+              </View>
+            )
+          : null
       }
-      contentContainerStyle={contentContainerStyle}
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={[
+        contentContainerStyle,
+        !loading && data?.length === 0 && { flexGrow: 1 },
+      ]}
     />
   );
 }

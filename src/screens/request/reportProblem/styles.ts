@@ -1,3 +1,4 @@
+import { PRIMARY } from "@/utils/color";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -68,7 +69,7 @@ export const styles = StyleSheet.create({
 
   detailBtn: {
     marginTop: 12,
-    backgroundColor: '#1337ec',
+    backgroundColor: PRIMARY,
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',

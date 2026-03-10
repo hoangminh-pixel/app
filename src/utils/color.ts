@@ -1,1 +1,24 @@
 export const PRIMARY = '#005a3c';
+
+export const WHITE = '#fff';
+export const TEXT_HOME_SLIDER = '#626A72';
+export const TEXT_HOME_JOB = '#21313F';
+export const BLACK = '#000';
+export const GRAY = '#999';
+export const BLUE = '#0071BB';
+export const GREEN = '#37BB09';
+export const LIGHT_BLUE = '#66b3ff';
+export const LIGHT_GRAY = '#EFEFEF';
+export const RED = '#ff0000';
+export const TOUCH_VIEW_MAP = '#0071BB';
+export const YELLOW = '#e6b800';
+export const ARRAY_GRADIENT = ['#6d2f5c', '#6d2f5c', '#6d2f5c'];
+export const X_LIGHT_BLUE = '#b3f0ff';
+export const LIGHT_GREEN = '#74ee4b';
+export const LIGHT_YELLOW = '#ffeb3b';
+export const LIGHT_RED = '#ff8f00';
+export const CUSTOMCOLORS = '#036143';
+export const COLORS_BOTTOM = '#036143';
+export const PURPLE = '#036143';
+export const ORANGE = '#FF8C00';
+export const TEAL = '#20c997';

@@ -141,4 +141,23 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: '#555',
   },
+  overlay: {
+    flex: 1,
+    backgroundColor: '#00000060',
+  },
+  calendarContainer: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+  },
+  imageChecklist: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 14,
+    // overflow: 'hidden',
+  },
 });

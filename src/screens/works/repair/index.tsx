@@ -9,6 +9,8 @@ import { FilterButton } from './components/FilterButton';
 import useRepair from './hooks/useRepair';
 import { styles } from './styles';
 import { JobCard } from '../maintenance/components/JobCard';
+import { ModalDropdown } from '@/components/DropDown';
+import AssignWorkModal from '../maintenance/components/AssignWorkModal';
 
 export default function RepairScreen() {
   const {
@@ -29,6 +31,25 @@ export default function RepairScreen() {
     loading,
     refreshing,
     hasMore,
+    visibleModalFilter,
+    setVisibleModalFilter,
+    STATUS_OPTIONS,
+    visibleAssignWorkModal,
+    setVisibleAssignWorkModal,
+    handleAssignWork,
+    dataDetailJob,
+    checkEmployee,
+    setCheckEmployee,
+    technicians,
+    setTechnicians,
+    techniciansWorkToo,
+    setCheckEmployeeWorkToo,
+    handleCloseModal,
+    handleAssignWorkInModal,
+    handleChangeFilterStatus,
+    dataMaintanenceFilter,
+    navigation,
+    handleReloadWhenBack,
   } = useRepair();
 
   return (
@@ -45,6 +66,8 @@ export default function RepairScreen() {
           leadingIcon="search"
           placeholder="Tìm mã công việc, thiết bị..."
           placeholderTextColor="#999"
+          trailingIcon={'tune'}
+          onPressTrailingIcon={() => setVisibleModalFilter(true)}
         />
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -64,9 +87,20 @@ export default function RepairScreen() {
       </View>
 
       <AppFlatList
-        data={dataMaintanence}
+        data={dataMaintanenceFilter}
         keyExtractor={item => item.id.toString()}
-        renderItem={({ item }: { item: Detail }) => <JobCard item={item} />}
+        renderItem={({ item }: { item: Detail }) => (
+          <Pressable
+            onPress={() => {
+              navigation.navigate('DetailRepairScreen', {
+                id: item.id,
+                onGoBack: handleReloadWhenBack,
+              });
+            }}
+          >
+            <JobCard item={item} onPressAssignWork={handleAssignWork} />
+          </Pressable>
+        )}
         contentContainerStyle={{ padding: 16 }}
         onRefresh={handleRefresh}
         onLoadMore={handleLoadMore}
@@ -75,7 +109,7 @@ export default function RepairScreen() {
         hasMore={hasMore}
       />
 
-      <Modal transparent visible={visible} animationType="fade">
+      <Modal transparent visible={visible}>
         <Pressable style={styles.overlay} onPress={() => setVisible(false)}>
           <View
             style={[styles.calendarContainer, { top: position.top, right: 10 }]}
@@ -90,6 +124,35 @@ export default function RepairScreen() {
           </View>
         </Pressable>
       </Modal>
+
+      <ModalDropdown
+        options={STATUS_OPTIONS}
+        onChange={item => {
+          handleChangeFilterStatus(item?.id);
+        }}
+        visible={visibleModalFilter}
+        onVisible={() => {
+          if (visibleModalFilter) {
+            setVisibleModalFilter(false);
+          } else {
+            setVisibleModalFilter(true);
+          }
+        }}
+      />
+      <AssignWorkModal
+        isVisible={visibleAssignWorkModal}
+        onAssign={() => {}}
+        onCloseModal={() => setVisibleAssignWorkModal(false)}
+        dataItem={dataDetailJob}
+        checkEmployee={checkEmployee}
+        setCheckEmployee={setCheckEmployee}
+        technicians={technicians}
+        setTechnicians={setTechnicians}
+        techniciansWorkToo={techniciansWorkToo}
+        setCheckEmployeeWorkToo={setCheckEmployeeWorkToo}
+        handleCloseModal={handleCloseModal}
+        handleAssignWorkInModal={handleAssignWorkInModal}
+      />
     </BasePage>
   );
 }

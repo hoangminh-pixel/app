@@ -3,39 +3,47 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ModalView } from 'react-native-multiple-modals';
 // import DropdownAssignWork from './DropdownAssignWork';
-import Dropdown from '@/components/DropDown';
+import Dropdown, { DropdownAppType } from '@/components/DropDown';
 import SizeBox from '@/components/SizeBox';
+import { RootDetailJob } from '@/services/workRepair';
 import { PRIMARY } from '@/utils/color';
+import moment from 'moment';
+// import useMaintenance from '../hooks/useMaintenance';
+import { DropdownMulti } from '@/components/DropDownMulti';
 
 type AssignWorkModalProps = {
   isVisible: boolean;
   onAssign: () => void;
   onCloseModal: () => void;
+  dataItem: RootDetailJob | null;
+  checkEmployee: DropdownAppType | null;
+  setCheckEmployee: React.Dispatch<
+    React.SetStateAction<DropdownAppType | null>
+  >;
+  technicians: DropdownAppType | null;
+  setTechnicians: React.Dispatch<React.SetStateAction<DropdownAppType | null>>;
+  techniciansWorkToo: DropdownAppType[];
+  setCheckEmployeeWorkToo: React.Dispatch<
+    React.SetStateAction<DropdownAppType[]>
+  >;
+  handleCloseModal: () => void;
+  handleAssignWorkInModal: (item: RootDetailJob | null) => Promise<void>;
 };
 
 const AssignWorkModal = ({
   isVisible,
   onAssign,
   onCloseModal,
+  dataItem,
+  checkEmployee,
+  setCheckEmployee,
+  technicians,
+  setTechnicians,
+  techniciansWorkToo,
+  setCheckEmployeeWorkToo,
+  handleCloseModal,
+  handleAssignWorkInModal,
 }: AssignWorkModalProps) => {
-  const STATUS_OPTIONS = [
-    { id: 'all', value: 'Tất cả' },
-    { id: 'tp_gv', value: 'QL giao việc' },
-    { id: 'give', value: 'Nhận việc' },
-    { id: 'processing', value: 'Đang thực hiện' },
-    { id: 'wait_materials', value: 'Chờ vật tư' },
-    { id: 'wait_tp_acceptance', value: 'Chờ QL nghiệm thu' },
-    { id: 'done', value: 'Hoàn thành' },
-
-    { id: 'alls', value: 'Tất cả' },
-    { id: 'tp_gvs', value: 'QL giao việc' },
-    { id: 'gives', value: 'Nhận việc' },
-    { id: 'processings', value: 'Đang thực hiện' },
-    { id: 'wait_materisals', value: 'Chờ vật tư' },
-    { id: 'wait_tp_acceptsance', value: 'Chờ QL nghiệm thu' },
-    { id: 'donse', value: 'Hoàn thành' },
-  ];
-
   const colors = {
     bg: '#f6f6f8',
     card: '#ffffff',
@@ -44,6 +52,16 @@ const AssignWorkModal = ({
     border: '#e2e8f0',
     primary: PRIMARY,
   };
+
+  const item = dataItem?.data;
+  const dataDropdown: any =
+    item?.list_employee_approve?.list_employee_approve.map(item => {
+      return {
+        id: item.id,
+        value: item.name,
+      };
+    });
+
   return (
     <View>
       {isVisible && (
@@ -55,7 +73,10 @@ const AssignWorkModal = ({
             width: '100%',
             justifyContent: 'flex-end',
           }}
-          onRequestDismiss={onCloseModal}
+          onRequestDismiss={() => {
+            onCloseModal();
+            handleCloseModal();
+          }}
         >
           <View style={[styles.container, { backgroundColor: colors.bg }]}>
             <SizeBox height={20} />
@@ -78,105 +99,74 @@ const AssignWorkModal = ({
 
               <View style={{ flex: 1 }}>
                 <View style={styles.jobTitleRow}>
-                  <Text
-                    style={[styles.jobTitle, { color: colors.text }]}
-                    numberOfLines={1}
-                  >
-                    Checklist PCCC
+                  <Text style={[styles.jobTitle, { color: colors.text }]}>
+                    {item?.name_related?.name_related}
                   </Text>
 
                   <MaterialIcons name="star" size={18} color="#f59e0b" />
                 </View>
 
                 <Text style={[styles.jobCode, { color: colors.sub }]}>
-                  PMI.251219.95565
+                  {item?.name?.name}
                 </Text>
               </View>
             </View>
 
             <ScrollView
+              keyboardShouldPersistTaps="always"
+              keyboardDismissMode="none"
               style={{ flex: 1 }}
               contentContainerStyle={{ paddingBottom: 20 }}
               showsVerticalScrollIndicator={false}
             >
-              <InfoRow label="Vị trí" value="Khác" colors={colors} />
               <InfoRow
-                label="Thời gian"
-                value="11:03 24/02/2026"
+                label="Vị trí"
+                value={item?.mro_location_id?.name}
                 colors={colors}
               />
-              <InfoRow label="Mô tả" value="Checklist PCCC" colors={colors} />
+              <InfoRow
+                label="Thời gian"
+                value={moment(item?.date_execution?.date_execution).format(
+                  'HH:mm DD/MM/YYYY',
+                )}
+                colors={colors}
+              />
+              <InfoRow
+                label="Mô tả"
+                value={item?.description?.description}
+                colors={colors}
+              />
               <InfoRow
                 label="Thiết bị"
-                value="Tích áp - PCCC"
+                value={item?.asset_id?.name}
                 colors={colors}
-                isBadge
               />
 
               <SizeBox height={20} />
 
               <Dropdown
                 label="Nhân viên kiểm tra"
-                value={'priority'}
-                options={[
-                  {
-                    id: 'id1',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 's',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 'a',
-                    value: 'Thấp1',
-                  },
-                ]}
-                onChange={() => {}}
+                value={checkEmployee?.value}
+                options={dataDropdown}
+                onChange={setCheckEmployee}
               />
 
               <SizeBox height={8} />
 
               <Dropdown
                 label="Kỹ thuật viên thực hiện"
-                value={'priority'}
-                options={[
-                  {
-                    id: 'id1',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 's',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 'a',
-                    value: 'Thấp1',
-                  },
-                ]}
-                onChange={() => {}}
+                value={technicians?.value}
+                options={dataDropdown}
+                onChange={setTechnicians}
               />
 
               <SizeBox height={8} />
 
-              <Dropdown
+              <DropdownMulti
                 label="Kỹ thuật viên cùng thực hiện"
-                value={'priority'}
-                options={[
-                  {
-                    id: 'id1',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 's',
-                    value: 'Thấp1',
-                  },
-                  {
-                    id: 'a',
-                    value: 'Thấp1',
-                  },
-                ]}
-                onChange={() => {}}
+                values={techniciansWorkToo}
+                options={dataDropdown}
+                onChange={setCheckEmployeeWorkToo}
               />
             </ScrollView>
 
@@ -190,14 +180,19 @@ const AssignWorkModal = ({
             >
               <Pressable
                 style={[styles.btnOutline, { borderColor: colors.border }]}
-                onPress={onCloseModal}
+                onPress={() => {
+                  onCloseModal();
+                  handleCloseModal();
+                }}
               >
                 <Text style={{ color: colors.text }}>Đóng</Text>
               </Pressable>
 
               <Pressable
                 style={[styles.btnPrimary, { backgroundColor: colors.primary }]}
-                onPress={onAssign}
+                onPress={async () => {
+                  await handleAssignWorkInModal(dataItem);
+                }}
               >
                 <Text style={{ color: '#fff' }}>Giao việc</Text>
               </Pressable>
@@ -211,17 +206,13 @@ const AssignWorkModal = ({
   );
 };
 
-const InfoRow = ({ label, value, colors, isBadge = false }: any) => (
+const InfoRow = ({ label, value, colors }: any) => (
   <View style={[styles.infoRow, { borderBottomColor: colors.border }]}>
     <Text style={{ color: colors.sub }}>{label}</Text>
-
-    {isBadge ? (
-      <View style={[styles.badge, { backgroundColor: colors.primary + '8' }]}>
-        <Text style={{ color: colors.primary }}>{value}</Text>
-      </View>
-    ) : (
-      <Text style={{ color: colors.text }}>{value}</Text>
-    )}
+    <SizeBox width={100} />
+    <Text style={{ color: colors.text, flex: 1, textAlign: 'right' }}>
+      {value}
+    </Text>
   </View>
 );
 

@@ -10,38 +10,67 @@ import {
   Text,
   View,
 } from 'react-native';
-import {
-  KeyboardAvoidingView
-} from 'react-native-keyboard-controller';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import AppInput from './AppInput';
 // import Modal from 'react-native-modal';
-interface ModalType {
+export interface DropdownAppType {
   id: any;
   value: string;
 }
 
 interface Props {
   label: string;
-  value: string;
-  options: ModalType[];
-  onChange: (val: string) => void;
+  value: string | undefined;
+  options: DropdownAppType[];
+  onChange: (val: DropdownAppType | null) => void;
+  disable?: boolean;
 }
 
-export default function Dropdown({ label, value, options, onChange }: Props) {
+export default function Dropdown({
+  label,
+  value,
+  options,
+  onChange,
+  disable = false,
+}: Props) {
   const [visible, setVisible] = useState(false);
 
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.label}>{label}</Text>
 
-      <Pressable style={styles.input} onPress={() => setVisible(true)}>
+      <Pressable
+        style={styles.input}
+        onPress={() => {
+          if (disable) {
+            return;
+          }
+          setVisible(true);
+        }}
+      >
         <Text
           style={{ color: value ? '#000' : '#888', flex: 1 }}
           numberOfLines={1}
         >
           {value || 'Chọn'}
         </Text>
-        <Icon name="keyboard-arrow-down" size={22} />
+        {disable ? (
+          <></>
+        ) : (
+          <>
+            {value ? (
+              <Pressable
+                onPress={() => {
+                  onChange(null);
+                }}
+              >
+                <Icon name="close" size={22} />
+              </Pressable>
+            ) : (
+              <Icon name="keyboard-arrow-down" size={22} />
+            )}
+          </>
+        )}
       </Pressable>
 
       <ModalDropdown
@@ -61,8 +90,8 @@ export default function Dropdown({ label, value, options, onChange }: Props) {
 }
 
 interface PropsModal {
-  options: ModalType[];
-  onChange: (val: string) => void;
+  options: DropdownAppType[];
+  onChange: (val: DropdownAppType | null) => void;
   visible: boolean;
   onVisible: () => void;
 }
@@ -75,11 +104,16 @@ export const ModalDropdown = ({
   const [search, setSearch] = useState('');
 
   const filteredOptions = options.filter(item =>
-    item.value.toLowerCase().includes(search.toLowerCase()),
+    item?.value?.toLowerCase()?.includes(search.toLowerCase()),
   );
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      presentationStyle="overFullScreen"
+    >
       <View style={styles.modalContainer}>
         <Pressable style={styles.overlay} onPress={onVisible} />
 
@@ -100,6 +134,8 @@ export const ModalDropdown = ({
             />
 
             <FlatList
+              keyboardDismissMode="none"
+              removeClippedSubviews={false}
               data={filteredOptions}
               keyExtractor={item => item.id.toString()}
               keyboardShouldPersistTaps="handled"
@@ -108,7 +144,7 @@ export const ModalDropdown = ({
                 <Pressable
                   style={styles.option}
                   onPress={() => {
-                    onChange(item.value);
+                    onChange(item);
                     onVisible();
                   }}
                 >
