@@ -124,7 +124,7 @@ export default function FabMenu({
             ]}
           >
             <Icon name="report-problem" size={20} color="white" />
-            <Text style={styles.label}>Tạo báo cáo</Text>
+            <Text style={styles.label}>Tạo báo sự cố</Text>
           </Animated.View>
         </Pressable>
 

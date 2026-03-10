@@ -9,6 +9,7 @@ import { RootRequest } from '../types';
 import useRepairRequest from './hooks/useRepairRequest';
 import { styles } from './styles';
 import FabMenu from '@/components/FAB';
+import { appEvent } from '@/utils/appEvent';
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
@@ -70,7 +71,9 @@ export default function RequestListScreen() {
         onNavigateCreateIssue={() => {
           navigation.navigate('CreateReportProbemScreen', {
             id: -1,
-            onGoBack: async () => {},
+            onGoBack: async () => {
+              appEvent.emit('reload_report_screen');
+            },
           });
         }}
       />
@@ -147,9 +150,9 @@ const RequestCard = ({ item }: { item: RootRequest }) => {
           </Text>
         </View>
 
-        <Pressable style={styles.detailBtn}>
+        <View style={styles.detailBtn}>
           <Text style={styles.detailText}>Xem chi tiết</Text>
-        </Pressable>
+        </View>
       </View>
     </View>
   );

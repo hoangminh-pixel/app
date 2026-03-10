@@ -25,7 +25,7 @@ const useCreateRepairRequest = () => {
   const role = useAppSelector(state => state.auth.user?.role ?? '');
   const route = useAppRoute<'CreateRepairRequestScreen'>();
 
-  const { id, onGoBack, state } = route.params;
+  const { id, onGoBack, state , author} = route.params;
 
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
@@ -58,6 +58,8 @@ const useCreateRepairRequest = () => {
   const [titleReport, setTitleReport] = useState<string>('');
   const [showRejectModal, setShowRejectModal] = useState<boolean>(false);
   const [showSkeleton, setShowSkeleton] = useState<boolean>(true);
+  const [imagePrev, setImagePrev] = useState<any[]>([]);
+
 
   useEffect(() => {
     initData();
@@ -348,7 +350,7 @@ const useCreateRepairRequest = () => {
         login: user?.login ?? '',
         password: user?.password ?? '',
         maintenance_type: 'cm',
-        asset_id: asset.id,
+        asset_id: asset?.id,
         asset_category_level1_id: deviceGroup?.id,
         cause_id: func?.id,
         zone_id: zone?.id,
@@ -357,7 +359,7 @@ const useCreateRepairRequest = () => {
         note_employee_request: requestEmployee,
         receive_department_id: maintenanceGroup?.id,
         request_department_id: receiveDepartment?.id,
-        priority_id: priority?.id,
+        priority_id: priority?.id ? priority?.id : null,
         g_map_location: '',
         report_cause_id: '',
         action: 'action_approve',
@@ -493,6 +495,7 @@ const useCreateRepairRequest = () => {
         });
 
         setDescription(data?.describe?.describe);
+        setImagePrev(data?.list_image_request.list_image_request)
 
         // setIs_approve(res.data?.show_button?.show_button);
       }
@@ -553,6 +556,8 @@ const useCreateRepairRequest = () => {
     handleShowRejectModal,
     handleHideRejectModal,
     showSkeleton,
+    author,
+    imagePrev
   };
 };
 

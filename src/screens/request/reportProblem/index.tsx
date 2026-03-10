@@ -9,6 +9,7 @@ import { RootRequest } from '../types';
 import useRepairRequest from './hooks/useReportProblem';
 import { styles } from './styles';
 import FabMenu from '@/components/FAB';
+import { appEvent } from '@/utils/appEvent';
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
@@ -52,6 +53,7 @@ export default function ReportProblemScreen() {
                   id: item.id,
                   onGoBack: handleReloadwhenBack,
                   state: item.state.state,
+                  author: item?.request_employee_id?.request_employee_id,
                 });
                 return;
               }
@@ -76,7 +78,9 @@ export default function ReportProblemScreen() {
         onNavigateCreateRepair={() => {
           navigation.navigate('CreateRepairRequestScreen', {
             id: -1,
-            onGoBack: async () => {},
+            onGoBack: async () => {
+              appEvent.emit('reload_repair_screen');
+            },
           });
         }}
         onNavigateCreateIssue={() => {
@@ -159,9 +163,9 @@ const RequestCard = ({ item }: { item: RootRequest }) => {
           </Text>
         </View>
 
-        <Pressable style={styles.detailBtn}>
+        <View style={styles.detailBtn}>
           <Text style={styles.detailText}>Xem chi tiết</Text>
-        </Pressable>
+        </View>
       </View>
     </View>
   );

@@ -72,13 +72,15 @@ export default function CreateRepairRequestScreen() {
     handleShowRejectModal,
     handleHideRejectModal,
     showSkeleton,
+    author,
+    imagePrev,
   } = useCreateRepairRequest();
 
   if (showSkeleton)
     return (
       <BasePage
         edges={['bottom']}
-        title="Yêu cầu sửa chữa"
+        title={author ? 'Báo sự cố' : 'Yêu cầu sửa chữa'}
         showBack
         paddingHorizontal={0}
         containerStyle={{ flex: 1 }}
@@ -91,7 +93,7 @@ export default function CreateRepairRequestScreen() {
     <BasePage edges={['bottom']} paddingHorizontal={0}>
       <BasePage
         scrollable
-        title="Yêu cầu sửa chữa"
+        title={author ? 'Báo sự cố' : 'Yêu cầu sửa chữa'}
         showBack
         bottomOffset={isAndroid ? 100 : 30}
       >
@@ -224,6 +226,36 @@ export default function CreateRepairRequestScreen() {
         </View>
 
         <View style={styles.imageGrid}>
+          {imagePrev?.map((item, index) => {
+            const isImage = /\.(jpe?g|png|gif|webp)$/i.test(
+              item.image_url || item.value,
+            );
+            return isImage ? (
+              <View key={index} style={styles.imageWrapper}>
+                <Image
+                  source={{
+                    uri: item.image_url || item.value,
+                  }}
+                  style={styles.imageChecklist}
+                />
+              </View>
+            ) : (
+              <View key={index} style={styles.imageWrapper}>
+                <Video
+                  style={[styles.imageChecklist, { overflow: 'hidden' }]}
+                  source={{ uri: item.image_url || item.value }}
+                  muted
+                  repeat
+                  resizeMode="cover"
+                />
+              </View>
+            );
+          })}
+        </View>
+
+        <SizeBox height={16} />
+
+        <View style={styles.imageGrid}>
           {mediaResponse.map((item, index) =>
             item.type === 'photo' ? (
               <View key={index} style={styles.imageWrapper}>
@@ -270,7 +302,9 @@ export default function CreateRepairRequestScreen() {
           </View>
 
           <View>
-            <AppText style={styles.userName}>{requestEmployee}</AppText>
+            <AppText style={styles.userName}>
+              {author ? author : requestEmployee}
+            </AppText>
             {/* <AppText style={styles.userInfo}>
               Mã NV: NV0923 • Phòng Hành chính
             </AppText> */}

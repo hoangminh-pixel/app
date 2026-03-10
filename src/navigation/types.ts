@@ -12,6 +12,7 @@ export type MainStackParamList = {
     id: number;
     onGoBack: () => Promise<void>;
     state?: string;
+    author?: string;
   };
   CreateReportProbemScreen: { id: number; onGoBack: () => Promise<void> };
   DetailRequestScreen: { id: number; onGoBack: () => Promise<void> };

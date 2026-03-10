@@ -249,6 +249,26 @@ export default function DetailRequestScreen() {
             {detailRequestData?.describe?.describe}
           </AppText>
         </View>
+
+        {detailRequestData?.reject_reason?.reject_reason && (
+          <View>
+            <SizeBox height={16} />
+            <View>
+              <AppText style={{ ...styles.sectionTitle, marginLeft: 0 }}>
+                Lý do từ chối:
+              </AppText>
+              <AppText
+                style={{
+                  ...styles.sectionTitle,
+                  marginLeft: 0,
+                  fontWeight: '600',
+                }}
+              >
+                {detailRequestData?.reject_reason?.reject_reason}
+              </AppText>
+            </View>
+          </View>
+        )}
         <SizeBox height={30} />
       </BasePage>
       {detailRequestData?.state?.state === 'claim' && role !== USER && (

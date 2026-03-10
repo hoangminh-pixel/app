@@ -12,6 +12,7 @@ import {
   RootDetailJob,
 } from '@/services/workRepair';
 import { ITEM_PER_PAGE } from '@/utils/appConstant';
+import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { findNodeHandle, UIManager, View } from 'react-native';
 
@@ -50,7 +51,7 @@ const useRepair = () => {
 
   useEffect(() => {
     handleGetListMaintanence();
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     // if (role === USER) return;
@@ -120,7 +121,7 @@ const useRepair = () => {
         item_per_page: ITEM_PER_PAGE,
         maintenance_type: ['cm', 'ne'],
         stage: [],
-        filter_date: '2025-12-30',
+        filter_date: moment(selectedDate).format('YYYY-MM-DD'),
         filtered: '',
         group: '',
       });
@@ -143,7 +144,7 @@ const useRepair = () => {
 
   const handleRefresh = () => {
     setSelectedFilter('all');
-    setSearch('')
+    setSearch('');
     handleGetListMaintanence(1, true);
   };
 
@@ -238,7 +239,7 @@ const useRepair = () => {
 
   const handleChangeFilterStatus = (item: string) => {
     setSelectedFilter(item);
-    setSearch('')
+    setSearch('');
   };
 
   const handleReloadWhenBack = async () => {
@@ -281,7 +282,7 @@ const useRepair = () => {
     handleChangeFilterStatus,
     dataMaintanenceFilter,
     navigation,
-    handleReloadWhenBack
+    handleReloadWhenBack,
   };
 };
 

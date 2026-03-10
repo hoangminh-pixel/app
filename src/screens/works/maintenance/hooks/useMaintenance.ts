@@ -16,6 +16,7 @@ import { ITEM_PER_PAGE } from '@/utils/appConstant';
 import { useEffect, useRef, useState } from 'react';
 import { findNodeHandle, UIManager, View } from 'react-native';
 import { useAppNavigation } from '@/navigation/NavigationService';
+import moment from 'moment';
 
 const useMaintenance = () => {
   const navigation = useAppNavigation();
@@ -53,7 +54,7 @@ const useMaintenance = () => {
 
   useEffect(() => {
     handleGetListMaintanence();
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     // if (role === USER) return;
@@ -123,7 +124,7 @@ const useMaintenance = () => {
         item_per_page: ITEM_PER_PAGE,
         maintenance_type: ['pm', 'por'],
         stage: [],
-        filter_date: '2025-12-30',
+        filter_date: moment(selectedDate).format('YYYY-MM-DD'),
         filtered: '',
         group: '',
       });
@@ -285,7 +286,7 @@ const useMaintenance = () => {
     handleChangeFilterStatus,
     dataMaintanenceFilter,
     navigation,
-    handleReloadWhenBack
+    handleReloadWhenBack,
   };
 };
 

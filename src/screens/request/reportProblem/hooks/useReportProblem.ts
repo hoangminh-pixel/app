@@ -6,6 +6,7 @@ import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
 import { showErrorToast } from '@/utils/toast';
 import { ITEM_PER_PAGE } from '@/utils/appConstant';
 import { useAppNavigation } from '@/navigation/NavigationService';
+import { appEvent } from '@/utils/appEvent';
 
 const useReportProblem = () => {
   const user = useAppSelector(state => state.auth.user);
@@ -20,6 +21,14 @@ const useReportProblem = () => {
 
   useEffect(() => {
     handleGetListMroRequest(1);
+  }, []);
+
+  useEffect(() => {
+    appEvent.on('reload_report_screen', handleReloadwhenBack);
+
+    return () => {
+      appEvent.off('reload_report_screen', handleReloadwhenBack);
+    };
   }, []);
 
   const handleGetListMroRequest = async (pageNumber = 1, isRefresh = false) => {

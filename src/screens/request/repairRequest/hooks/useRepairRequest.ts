@@ -6,6 +6,7 @@ import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
 import { showErrorToast } from '@/utils/toast';
 import { ITEM_PER_PAGE } from '@/utils/appConstant';
 import { useAppNavigation } from '@/navigation/NavigationService';
+import { appEvent } from '@/utils/appEvent';
 
 const useRepairRequest = () => {
   const user = useAppSelector(state => state.auth.user);
@@ -20,6 +21,14 @@ const useRepairRequest = () => {
 
   useEffect(() => {
     handleGetListMroRequest(1);
+  }, []);
+
+  useEffect(() => {
+    appEvent.on('reload_repair_screen', handleReloadwhenBack);
+
+    return () => {
+      appEvent.off('reload_repair_screen', handleReloadwhenBack);
+    };
   }, []);
 
   const handleGetListMroRequest = async (pageNumber = 1, isRefresh = false) => {
@@ -82,7 +91,7 @@ const useRepairRequest = () => {
     handleLoadMore,
     hasMore,
     navigation,
-    handleReloadwhenBack
+    handleReloadwhenBack,
   };
 };
 
