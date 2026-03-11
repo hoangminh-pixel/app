@@ -1,22 +1,11 @@
-import { DropdownAppType } from '@/components/DropDown';
-import useAppCamera from '@/hooks/useAppCamera';
 import { useAppNavigation, useAppRoute } from '@/navigation/NavigationService';
 import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
-import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import {
-  createMroRequest,
-  getDepartment,
-  getInforDetailMroRequest,
-  getListAsset,
-  getListGroupAsset,
-  getListService,
-  getLocation,
-  getPriorityOption,
-  getZone,
+  createMroRequest
 } from '@/services/request';
 import { getDetailRequest } from '@/services/works';
 import { showErrorToast, showSuccesToast } from '@/utils/toast';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { DetailRequestResponse } from '../../types';
 

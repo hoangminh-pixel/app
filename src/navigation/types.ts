@@ -16,4 +16,6 @@ export type MainStackParamList = {
   };
   CreateReportProbemScreen: { id: number; onGoBack: () => Promise<void> };
   DetailRequestScreen: { id: number; onGoBack: () => Promise<void> };
+  ListJobTodayScreen: { state: string };
+  SettingScreen: undefined;
 };

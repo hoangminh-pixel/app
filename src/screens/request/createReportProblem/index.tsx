@@ -36,6 +36,7 @@ export default function CreateReportProbemScreen() {
     onFocusInput,
     onBlurInput,
     keyboardShouldPersistTaps,
+    openLibrary,
   } = useCreateReportProblem();
 
   return (
@@ -77,7 +78,9 @@ export default function CreateReportProbemScreen() {
               <Icon name="photo-camera" size={22} color="#94a3b8" />
             </TouchableOpacity>
 
-            <Icon name="image" size={22} color="#94a3b8" />
+            <TouchableOpacity onPress={openLibrary}>
+              <Icon name="image" size={22} color="#94a3b8" />
+            </TouchableOpacity>
           </View>
         </View>
 

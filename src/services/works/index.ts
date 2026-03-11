@@ -105,3 +105,18 @@ export const getDetailRequest = async (
 
   return response.data.result?.[0];
 };
+
+interface ListDevicesPayload {
+  login: string;
+  password: string;
+}
+export const getListDevices = async (
+  payload: ListDevicesPayload,
+): Promise<any> => {
+  const response = await axiosInstance.post(
+    '/get_asset_category_level1',
+    payload,
+  );
+
+  return response.data.result?.[0];
+};

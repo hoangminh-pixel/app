@@ -20,13 +20,13 @@ import { useEffect, useState } from 'react';
 
 const useCreateReportProblem = () => {
   const user = useAppSelector(state => state.auth.user);
-  const route = useAppRoute<'CreateRepairRequestScreen'>();
+  const route = useAppRoute<'CreateReportProbemScreen'>();
 
   const { id, onGoBack } = route.params;
 
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const { openCamera, mediaResponse, loading, removeMedia } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
 
   const [requestEmployee, setRequestEmployee] = useState('');
 
@@ -189,6 +189,15 @@ const useCreateReportProblem = () => {
   };
 
   const handleCreateMroRequest = async () => {
+    if (!title || title === '') {
+      showErrorToast({ content: 'Vui lòng nhập tiêu đề!' });
+      return;
+    }
+
+    if (!description || description === '') {
+      showErrorToast({ content: 'Vui lòng nhập mô tả!' });
+      return;
+    }
     try {
       dispatch(showLoading());
       const res = await createMroRequest({
@@ -214,7 +223,7 @@ const useCreateReportProblem = () => {
       if (res && res.code === 1) {
         showSuccesToast({ title: 'Tạo yêu cầu thành công' });
         if (onGoBack && navigation.canGoBack()) {
-         await onGoBack();
+          await onGoBack();
           navigation.goBack();
         }
       }
@@ -264,6 +273,7 @@ const useCreateReportProblem = () => {
     onFocusInput,
     onBlurInput,
     keyboardShouldPersistTaps,
+    openLibrary
   };
 };
 

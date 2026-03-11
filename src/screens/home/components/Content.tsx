@@ -1,5 +1,5 @@
 import { AppText } from '@/components';
-import { View, Image, ScrollView } from 'react-native';
+import { View, Image, ScrollView, Pressable } from 'react-native';
 import { styles } from '../styles';
 import { StatusCard } from './StatusCard';
 import { TaskItem } from './TaskItem';
@@ -16,9 +16,10 @@ type Props = {
     onPress: () => void;
     icon: string;
   }[];
+  handleNavigate: (id: number) => void;
 };
 
-export const Content = ({ data, summary }: Props) => {
+export const Content = ({ data, summary, handleNavigate }: Props) => {
   return (
     <>
       <View style={styles.section}>
@@ -61,6 +62,7 @@ export const Content = ({ data, summary }: Props) => {
           {summary.map(item => {
             return (
               <StatusCard
+                onPress={item.onPress}
                 key={item.label}
                 icon={item.icon}
                 number={item.value}
@@ -74,20 +76,23 @@ export const Content = ({ data, summary }: Props) => {
 
       <View style={styles.section}>
         <View style={styles.rowBetween}>
-          <AppText style={styles.sectionTitle}>HOẠT ĐỘNG GẦN ĐÂY</AppText>
+          <AppText style={styles.sectionTitle}>
+            DANH SÁCH CÔNG VIỆC TRONG NGÀY
+          </AppText>
           {/* <AppText style={styles.viewAll}>Xem tất cả</AppText> */}
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           {data?.orders?.map(task => (
-            <TaskItem
-              key={task.id}
-              icon="work"
-              title={task.name}
-              code={task.cause_id}
-              state={task.state}
-              status={getSateItem({ state: task.state })}
-            />
+            <Pressable key={task.id} onPress={() => handleNavigate(task.id)}>
+              <TaskItem
+                icon="work"
+                title={task.cause_id}
+                code={task.name}
+                state={task.state}
+                status={getSateItem({ state: task.state })}
+              />
+            </Pressable>
           ))}
         </ScrollView>
       </View>

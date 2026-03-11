@@ -74,6 +74,10 @@ export default function CreateRepairRequestScreen() {
     showSkeleton,
     author,
     imagePrev,
+    onFocusInput,
+    onBlurInput,
+    keyboardShouldPersistTaps,
+    openLibrary,
   } = useCreateRepairRequest();
 
   if (showSkeleton)
@@ -96,6 +100,7 @@ export default function CreateRepairRequestScreen() {
         title={author ? 'Báo sự cố' : 'Yêu cầu sửa chữa'}
         showBack
         bottomOffset={isAndroid ? 100 : 30}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       >
         <SizeBox height={16} />
         <Section title="Thông tin chung" icon="info" />
@@ -104,8 +109,8 @@ export default function CreateRepairRequestScreen() {
             label={`Tiêu đề *`}
             value={titleReport}
             onChangeText={setTitleReport}
-            // onFocus={onFocusInput}
-            // onBlur={onBlurInput}
+            onFocus={onFocusInput}
+            onBlur={onBlurInput}
           />
         )}
         <Dropdown
@@ -220,8 +225,9 @@ export default function CreateRepairRequestScreen() {
             <TouchableOpacity onPress={handleOpenPhoto}>
               <Icon name="photo-camera" size={22} color="#94a3b8" />
             </TouchableOpacity>
-
-            <Icon name="image" size={22} color="#94a3b8" />
+            <TouchableOpacity onPress={openLibrary}>
+              <Icon name="image" size={22} color="#94a3b8" />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -318,6 +324,8 @@ export default function CreateRepairRequestScreen() {
           multiline
           value={description}
           onChangeText={setDescription}
+          onFocus={onFocusInput}
+          onBlur={onBlurInput}
         />
       </BasePage>
       <View style={styles.footer}>

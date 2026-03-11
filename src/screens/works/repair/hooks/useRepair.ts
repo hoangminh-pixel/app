@@ -11,7 +11,7 @@ import {
   ResponseWorkRepair,
   RootDetailJob,
 } from '@/services/workRepair';
-import { ITEM_PER_PAGE } from '@/utils/appConstant';
+import { ITEM_PER_PAGE, USER } from '@/utils/appConstant';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { findNodeHandle, UIManager, View } from 'react-native';
@@ -20,6 +20,8 @@ const useRepair = () => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const user = useAppSelector(state => state.auth.user);
+  const role = useAppSelector(state => state.auth.user?.role);
+
   const [search, setSearch] = useState('');
   const [selectedButton, setSelectedButton] = useState('today');
   const buttonRef = useRef<View>(null);
@@ -48,13 +50,14 @@ const useRepair = () => {
     DropdownAppType[]
   >([]);
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     handleGetListMaintanence();
   }, [selectedDate]);
 
   useEffect(() => {
-    // if (role === USER) return;
+    if (role === USER) return;
     applyFilter();
   }, [dataMaintanence, selectedFilter, search]);
 
@@ -109,11 +112,14 @@ const useRepair = () => {
     isRefresh = false,
   ) => {
     if (loading) return;
+    if (pageNumber === 1) {
+      setShowSkeleton(true);
+    }
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
 
-      dispatch(showLoading());
+      // dispatch(showLoading());
       const data = await getListJob({
         login: user?.login ?? '',
         password: user?.password ?? '',
@@ -136,9 +142,12 @@ const useRepair = () => {
     } catch (error) {
       console.log('error handleGetListMaintanence', error);
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
       setLoading(false);
       setRefreshing(false);
+      if (pageNumber === 1) {
+        setShowSkeleton(false);
+      }
     }
   };
 
@@ -283,6 +292,7 @@ const useRepair = () => {
     dataMaintanenceFilter,
     navigation,
     handleReloadWhenBack,
+    showSkeleton,
   };
 };
 

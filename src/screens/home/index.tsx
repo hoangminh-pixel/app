@@ -2,7 +2,13 @@ import { AppText } from '@/components';
 import BasePage from '@/components/BasePage';
 import Icon from '@react-native-vector-icons/material-icons';
 import React from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { StatusCard } from './components/StatusCard';
 import { TaskItem } from './components/TaskItem';
 import { styles } from './styles';
@@ -12,7 +18,14 @@ import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import { AppFlatList } from '@/components/AppFlatList';
 
 const HomeScreen = () => {
-  const { homeData, summary, showSkeleton, handleGetDataHome } = useHome();
+  const {
+    homeData,
+    summary,
+    showSkeleton,
+    handleGetDataHome,
+    handleNavigate,
+    handleNavigateSetting,
+  } = useHome();
 
   if (showSkeleton) {
     return (
@@ -20,9 +33,9 @@ const HomeScreen = () => {
         title="Trang chủ"
         paddingHorizontal={0}
         actions={
-          <TouchableOpacity>
+          <Pressable onPress={handleNavigateSetting}>
             <Icon name="settings" size={24} color="white" />
-          </TouchableOpacity>
+          </Pressable>
         }
       >
         <HomeSkeleton />
@@ -34,9 +47,9 @@ const HomeScreen = () => {
     <BasePage
       title="Trang chủ"
       actions={
-        <TouchableOpacity>
+        <Pressable onPress={handleNavigateSetting}>
           <Icon name="settings" size={24} color="white" />
-        </TouchableOpacity>
+        </Pressable>
       }
     >
       <AppFlatList
@@ -45,7 +58,13 @@ const HomeScreen = () => {
         data={[] as any}
         keyExtractor={({ item }: { item: any }) => item.id.toString()}
         renderItem={({ item }: { item: any }) => <TaskItem {...item} />}
-        ListHeaderComponent={<Content data={homeData} summary={summary} />}
+        ListHeaderComponent={
+          <Content
+            data={homeData}
+            summary={summary}
+            handleNavigate={handleNavigate}
+          />
+        }
         ListEmptyComponent={<></>}
       />
     </BasePage>

@@ -44,7 +44,7 @@ const useDetailRepair = () => {
 
   const [showRejectModal, setShowRejectModal] = useState<boolean>(false);
 
-  const { openCamera, mediaResponse, loading, removeMedia } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
 
   useEffect(() => {
     handleGetDetailWork();
@@ -157,7 +157,6 @@ const useDetailRepair = () => {
         action: action,
         reason: reason,
       });
-      console.log('data', data);
 
       if (data?.code === 1002) {
         showErrorToast({ content: data?.message });
@@ -179,6 +178,27 @@ const useDetailRepair = () => {
   };
 
   const handleDoneJob = async () => {
+    if (!desc || desc === '') {
+      showErrorToast({
+        content: 'Vui lòng nhập mô tả!',
+      });
+      return;
+    }
+
+    const listOrderPartsIds =
+      dataDetailJob?.data?.list_order_parts_ids?.list_order_parts_ids;
+    if (listOrderPartsIds) {
+      const isCancelListOrder = listOrderPartsIds.filter(
+        item => item?.state?.state === 'Chờ giám đốc phê duyệt',
+      );
+      if (isCancelListOrder.length > 0) {
+        showErrorToast({
+          content: 'Có phiếu vật tư chưa hoàn thành',
+        });
+        return;
+      }
+    }
+
     try {
       dispatch(showLoading());
       const data = await doneDetailJob({
@@ -258,6 +278,10 @@ const useDetailRepair = () => {
 
   const handleChangeDesc = (v: string) => setDesc(v);
 
+  const isMaintenance =
+    dataDetailJob?.data?.list_project_task_ids.list_project_task_ids &&
+    dataDetailJob?.data?.list_project_task_ids.list_project_task_ids.length > 0;
+
   return {
     dataDetailJob,
     skelenton,
@@ -292,6 +316,8 @@ const useDetailRepair = () => {
     handleChangeReason,
     handleChangeDesc,
     handleDoneJob,
+    isMaintenance,
+    openLibrary
   };
 };
 

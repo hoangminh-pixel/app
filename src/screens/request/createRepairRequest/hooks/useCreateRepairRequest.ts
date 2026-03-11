@@ -25,11 +25,12 @@ const useCreateRepairRequest = () => {
   const role = useAppSelector(state => state.auth.user?.role ?? '');
   const route = useAppRoute<'CreateRepairRequestScreen'>();
 
-  const { id, onGoBack, state , author} = route.params;
+  const { id, onGoBack, state, author } = route.params;
 
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const { openCamera, mediaResponse, loading, removeMedia } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } =
+    useAppCamera();
 
   const [requestEmployee, setRequestEmployee] = useState('');
   const [listDeviceGroup, setListDeviceGroup] = useState<DropdownAppType[]>([]);
@@ -59,7 +60,9 @@ const useCreateRepairRequest = () => {
   const [showRejectModal, setShowRejectModal] = useState<boolean>(false);
   const [showSkeleton, setShowSkeleton] = useState<boolean>(true);
   const [imagePrev, setImagePrev] = useState<any[]>([]);
-
+  const [keyboardShouldPersistTaps, setKeyboardShouldPersistTaps] = useState<
+    boolean | 'always' | 'never' | 'handled' | undefined
+  >('always');
 
   useEffect(() => {
     initData();
@@ -344,6 +347,10 @@ const useCreateRepairRequest = () => {
   };
 
   const handleCreateMroRequest = async () => {
+    if (!description || description === '') {
+      showErrorToast({ content: 'Vui lòng nhập mô tả!' });
+      return;
+    }
     try {
       dispatch(showLoading());
       const res = await createMroRequest({
@@ -374,6 +381,10 @@ const useCreateRepairRequest = () => {
           await onGoBack();
           navigation.goBack();
         }
+      }
+      if (res && res.code === 1001) {
+        showErrorToast({ content: 'Vui lòng nhập đủ thông tin!' });
+        return;
       }
     } catch (error) {
       console.log('error handleCreateMroRequest', error);
@@ -451,6 +462,10 @@ const useCreateRepairRequest = () => {
           navigation.goBack();
         }
       }
+      if (res && res.code === 1001) {
+        showErrorToast({ content: 'Vui lòng nhập đủ thông tin!' });
+        return;
+      }
     } catch (error) {
       console.log('error handleApproveOrRejectMroRequest', error);
       showErrorToast({});
@@ -495,7 +510,7 @@ const useCreateRepairRequest = () => {
         });
 
         setDescription(data?.describe?.describe);
-        setImagePrev(data?.list_image_request.list_image_request)
+        setImagePrev(data?.list_image_request.list_image_request);
 
         // setIs_approve(res.data?.show_button?.show_button);
       }
@@ -510,6 +525,15 @@ const useCreateRepairRequest = () => {
   const handleShowRejectModal = () => setShowRejectModal(true);
 
   const handleHideRejectModal = () => setShowRejectModal(false);
+
+  const onFocusInput = () => {
+    setKeyboardShouldPersistTaps('handled');
+  };
+
+  const onBlurInput = () => {
+    setKeyboardShouldPersistTaps('always');
+  };
+
   return {
     requestEmployee,
     listDeviceGroup,
@@ -557,7 +581,11 @@ const useCreateRepairRequest = () => {
     handleHideRejectModal,
     showSkeleton,
     author,
-    imagePrev
+    imagePrev,
+    onFocusInput,
+    onBlurInput,
+    keyboardShouldPersistTaps,
+    openLibrary,
   };
 };
 

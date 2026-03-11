@@ -10,6 +10,7 @@ import { PRIMARY } from '@/utils/color';
 import moment from 'moment';
 // import useMaintenance from '../hooks/useMaintenance';
 import { DropdownMulti } from '@/components/DropDownMulti';
+import { showErrorToast } from '@/utils/toast';
 
 type AssignWorkModalProps = {
   isVisible: boolean;
@@ -191,6 +192,18 @@ const AssignWorkModal = ({
               <Pressable
                 style={[styles.btnPrimary, { backgroundColor: colors.primary }]}
                 onPress={async () => {
+                  if (!checkEmployee?.value) {
+                    showErrorToast({
+                      content: 'Vui lòng chọn nhân viên kiểm tra!',
+                    });
+                    return;
+                  }
+                  if (!technicians?.value) {
+                    showErrorToast({
+                      content: 'Vui lòng chọn kỹ thuật viên thực hiện!',
+                    });
+                    return;
+                  }
                   await handleAssignWorkInModal(dataItem);
                 }}
               >

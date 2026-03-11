@@ -22,7 +22,7 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
   const [checklistDesc, setChecklistDesc] = useState(item.note.note);
   const [measure, setMeasure] = useState(item.measure.measure);
 
-  const { openCamera, mediaResponse, loading, removeMedia } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
 
   const serverMedia: MediaTypeRes[] =
     item?.list_image_url?.list_image_url?.map(img => {
@@ -102,6 +102,21 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
   const onMeasureChange = (v: string) => setMeasure(v);
 
   const handleUpdateChecklist = async () => {
+    if (checklistType === 'picture' && mediaResponse.length <= 0) {
+      showErrorToast({ content: 'Vui lòng thêm hình ảnh!' });
+      return;
+    }
+
+    if (checklistType === 'measure' && !measure) {
+      showErrorToast({ content: 'Vui lòng nhập đo lường!' });
+      return;
+    }
+
+    if (checklistType === 'text' && !checklistDesc) {
+      showErrorToast({ content: 'Vui lòng nhập mô tả!' });
+      return;
+    }
+
     try {
       dispatch(showLoading());
       const data = await actionUpdateChecklist({
@@ -181,5 +196,6 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
     removeMedia,
     handleOpenPhoto,
     displayMedia,
+    openLibrary
   };
 };

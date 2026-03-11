@@ -103,7 +103,7 @@ export const ModalDropdown = ({
 }: PropsModal) => {
   const [search, setSearch] = useState('');
 
-  const filteredOptions = options.filter(item =>
+  const filteredOptions = options?.filter(item =>
     item?.value?.toLowerCase()?.includes(search.toLowerCase()),
   );
 

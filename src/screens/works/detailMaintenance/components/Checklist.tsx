@@ -84,6 +84,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
     mediaResponse,
     removeMedia,
     displayMedia,
+    openLibrary,
   } = useItemChecklist({ item, checklistType: type });
 
   return (
@@ -132,7 +133,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
       <View style={{ display: isShow ? 'flex' : 'none' }}>
         <SizeBox height={8} />
         {/* Guide */}
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text
             style={{
               fontSize: 12,
@@ -144,7 +145,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
           >
             Hướng dẫn
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Description */}
         <View style={{ marginBottom: 12 }}>
@@ -178,6 +179,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
             openPhoto={handleOpenPhoto}
             media={displayMedia}
             removeMedia={removeMedia}
+            openLibrary={openLibrary}
           />
         )}
         {type === 'measure' && (
@@ -332,10 +334,12 @@ function MediaSection({
   openPhoto,
   media,
   removeMedia,
+  openLibrary,
 }: {
   openCamera: () => void;
   openPhoto: () => void;
   media: MediaTypeRes[];
+  openLibrary: () => void;
   removeMedia: (index: number) => void;
 }) {
   return (
@@ -348,7 +352,9 @@ function MediaSection({
           <Icon name="photo-camera" size={22} color="#94a3b8" />
         </TouchableOpacity>
 
-        <Icon name="image" size={22} color="#94a3b8" />
+        <TouchableOpacity onPress={openLibrary}>
+          <Icon name="image" size={22} color="#94a3b8" />
+        </TouchableOpacity>
       </View>
 
       <SizeBox height={16} />

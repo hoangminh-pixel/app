@@ -10,7 +10,7 @@ import { getUserInfo, setAccessToken, setUserInfo } from '@/utils/storage';
 const useLogin = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth.user);
 
@@ -35,21 +35,17 @@ const useLogin = () => {
         });
         return;
       }
-      await setAccessToken(data.data.access_token);
       const userInfor = {
         ...data.data,
         password: password,
       };
-      console.log('user', userInfor);
-      
+
       await setUserInfo(userInfor);
 
       const user = await getUserInfo();
       if (user) {
         dispatch(loginAction({ user }));
       }
-
-      // console.log('RESPONSEss:', data.data);
     } catch (error: any) {
       showErrorToast({
         content: error,

@@ -18,6 +18,7 @@ const useReportProblem = () => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     handleGetListMroRequest(1);
@@ -33,12 +34,14 @@ const useReportProblem = () => {
 
   const handleGetListMroRequest = async (pageNumber = 1, isRefresh = false) => {
     if (loading) return;
-
+    if (pageNumber === 1) {
+      setShowSkeleton(true);
+    }
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
 
-      dispatch(showLoading());
+      // dispatch(showLoading());
 
       const res = await getListMroRequest({
         login: user?.login ?? '',
@@ -63,9 +66,12 @@ const useReportProblem = () => {
       console.log('error handleGetListMroRequest', error);
       showErrorToast({});
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
       setLoading(false);
       setRefreshing(false);
+      if (pageNumber === 1) {
+        setShowSkeleton(false);
+      }
     }
   };
 
@@ -92,6 +98,7 @@ const useReportProblem = () => {
     hasMore,
     navigation,
     handleReloadwhenBack,
+    showSkeleton
   };
 };
 

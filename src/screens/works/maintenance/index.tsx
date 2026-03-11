@@ -11,6 +11,7 @@ import { FilterButton } from './components/FilterButton';
 import { JobCard } from './components/JobCard';
 import useMaintenance from './hooks/useMaintenance';
 import { styles } from './styles';
+import JobListSkeleton from '@/components/skeletons/ListJobSkeleton';
 
 export default function MaintanenceScreen() {
   const {
@@ -50,6 +51,7 @@ export default function MaintanenceScreen() {
     dataMaintanenceFilter,
     navigation,
     handleReloadWhenBack,
+    showSkeleton,
   } = useMaintenance();
 
   return (
@@ -85,29 +87,33 @@ export default function MaintanenceScreen() {
         </ScrollView>
       </View>
 
-      <AppFlatList
-        data={dataMaintanenceFilter}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }: { item: Detail }) => (
-          <Pressable
-            onPress={() => {
-              console.log('press item');
-              navigation.navigate('DetailMaintenanceScreen', {
-                id: item.id,
-                onGoBack: handleReloadWhenBack,
-              });
-            }}
-          >
-            <JobCard item={item} onPressAssignWork={handleAssignWork} />
-          </Pressable>
-        )}
-        contentContainerStyle={{ padding: 16 }}
-        onRefresh={handleRefresh}
-        onLoadMore={handleLoadMore}
-        loading={loading}
-        refreshing={refreshing}
-        hasMore={hasMore}
-      />
+      {showSkeleton ? (
+        <JobListSkeleton />
+      ) : (
+        <AppFlatList
+          data={dataMaintanenceFilter}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }: { item: Detail }) => (
+            <Pressable
+              onPress={() => {
+                console.log('press item');
+                navigation.navigate('DetailRepairScreen', {
+                  id: item.id,
+                  onGoBack: handleReloadWhenBack,
+                });
+              }}
+            >
+              <JobCard item={item} onPressAssignWork={handleAssignWork} />
+            </Pressable>
+          )}
+          contentContainerStyle={{ padding: 16 }}
+          onRefresh={handleRefresh}
+          onLoadMore={handleLoadMore}
+          loading={loading}
+          refreshing={refreshing}
+          hasMore={hasMore}
+        />
+      )}
 
       <Modal transparent visible={visible}>
         <Pressable style={styles.overlay} onPress={() => setVisible(false)}>

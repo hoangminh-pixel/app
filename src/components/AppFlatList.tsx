@@ -44,11 +44,13 @@ export function AppFlatList<T>({
   const onEndReachedCalledDuringMomentum = useRef(false);
 
   const handleLoadMore = useCallback(() => {
+    if (!data || data.length === 0) return;
+
     if (!loading && hasMore && !onEndReachedCalledDuringMomentum.current) {
       onLoadMore?.();
       onEndReachedCalledDuringMomentum.current = true;
     }
-  }, [loading, hasMore, onLoadMore]);
+  }, [loading, hasMore, onLoadMore, data]);
 
   return (
     <FlatList
@@ -63,7 +65,8 @@ export function AppFlatList<T>({
       }
       scrollEnabled={scrollEnabled}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.3}
+      onEndReachedThreshold={0.2}
+      initialNumToRender={10}
       onMomentumScrollBegin={() => {
         onEndReachedCalledDuringMomentum.current = false;
       }}
@@ -77,7 +80,7 @@ export function AppFlatList<T>({
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={
-        !loading && data?.length === 0
+        data?.length === 0 && !loading && !refreshing
           ? ListEmptyComponent || (
               <View style={styles.empty}>
                 <Text>Không có dữ liệu</Text>

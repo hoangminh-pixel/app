@@ -17,14 +17,11 @@ export default function RootNavigator() {
 
   const handleCheckUser = async () => {
     try {
-      const token = await AsyncStorage.getItem('access_token');
       const user = await getUserInfo();
 
-      if (token) {
+      if (user) {
         setLoading(false);
-        if (user) {
-          dispatch(login({ user }));
-        }
+        dispatch(login({ user }));
       }
     } catch (error) {
       console.log('error : ', error);

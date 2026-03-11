@@ -6,6 +6,8 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>CmmsAmsApp</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,53 +28,41 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-
-	<key>NSAllowsArbitraryLoads</key>
-	<false/>
-
-	<key>NSAllowsLocalNetworking</key>
-	<true/>
-
-	<key>NSExceptionDomains</key>
-	<dict>
-		<key>demo-cmms.izisolution.vn</key>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSExceptionDomains</key>
 		<dict>
-			<key>NSIncludesSubdomains</key>
-			<true/>
-			<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-			<true/>
-			<key>NSTemporaryExceptionMinimumTLSVersion</key>
-			<string>TLSv1.2</string>
+			<key>demo-cmms.izisolution.vn</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+			</dict>
 		</dict>
 	</dict>
-
-	</dict>
-
 	<key>NSCameraUsageDescription</key>
 	<string>ASM-CMMS uses the camera to scan QR codes and capture equipment images for maintenance reports.</string>
-
-	<key>NSMicrophoneUsageDescription</key>
-	<string>ASM-CMMS uses the microphone to record audio when capturing videos for maintenance reports.</string>
-
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>ASM-CMMS needs access to your photo library to attach images to maintenance tasks.</string>
-
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>ASM-CMMS needs permission to save captured images or videos to your photo library.</string>
-
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ASM-CMMS uses your location to identify where maintenance activities are performed.</string>
-
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>ASM-CMMS uses your location to identify where maintenance activities are performed.</string>
-
-
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ASM-CMMS uses your location to identify where maintenance activities are performed.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ASM-CMMS uses the microphone to record audio when capturing videos for maintenance reports.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ASM-CMMS needs permission to save captured images or videos to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ASM-CMMS needs access to your photo library to attach images to maintenance tasks.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>
 	</array>
-	<key>RCTNewArchEnabled</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

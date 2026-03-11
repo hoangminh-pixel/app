@@ -79,6 +79,50 @@ const useAppCamera = () => {
     }
   };
 
+  const openLibrary = async () => {
+    try {
+      setLoading(true);
+
+      const hasPermission = await requestPermission();
+      if (!hasPermission) return;
+
+      const response = await ImagePicker.launchImageLibrary({
+        mediaType: 'mixed',
+        selectionLimit: 1, // 0 = chọn nhiều
+        quality: 0.7,
+        videoQuality: 'medium',
+      });
+
+      if (
+        response.didCancel ||
+        response.errorCode ||
+        !response.assets?.length
+      ) {
+        console.log('Library cancelled or failed');
+        return;
+      }
+
+      const asset = response.assets[0];
+
+      const type = asset.type?.includes('video') ? 'video' : 'photo';
+
+      const fileName = getFileName(asset, type);
+
+      setMediaResponse(prev => [
+        ...prev,
+        {
+          name: fileName,
+          url: asset.uri ?? '',
+          type,
+        },
+      ]);
+    } catch (error) {
+      console.log('error selectFromLibrary', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const removeMedia = (index: number) => {
     const newList = [...mediaResponse];
     newList.splice(index, 1);
@@ -90,6 +134,7 @@ const useAppCamera = () => {
     openCamera,
     loading,
     removeMedia,
+    openLibrary,
   };
 };
 

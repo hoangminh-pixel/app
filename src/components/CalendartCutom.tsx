@@ -12,6 +12,7 @@ const weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 type Props = {
   selectedDate: Date | null;
   onSelect: (date: Date) => void;
+  initialDate?: Date;
 };
 
 const generateCalendar = (date: Date) => {
@@ -50,8 +51,12 @@ const generateCalendar = (date: Date) => {
   return days;
 };
 
-export default function CustomCalendar({ selectedDate, onSelect }: Props) {
-  const [currentDate, setCurrentDate] = useState(new Date());
+export default function CustomCalendar({ selectedDate, onSelect, initialDate }: Props) {
+  const today = new Date();
+
+  const [currentDate, setCurrentDate] = useState(
+    initialDate ?? selectedDate ?? today,
+  );
 
   const days = useMemo(() => generateCalendar(currentDate), [currentDate]);
 

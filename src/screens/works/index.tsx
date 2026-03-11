@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import React from 'react';
 import MaintanenceScreen from './maintenance';
 import RepairScreen from './repair';
+import ReportWorkScreen from './report';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -45,7 +46,7 @@ const WorkTopTabs = () => {
         />
         <Tab.Screen
           name={'ReportWork'}
-          component={MaintanenceScreen}
+          component={ReportWorkScreen}
           options={{
             title: 'BC Công việc',
             tabBarLabelStyle: {

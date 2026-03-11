@@ -1,3 +1,4 @@
+import { useAppNavigation } from '@/navigation/NavigationService';
 import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { countTotalWork } from '@/services/home';
@@ -6,6 +7,8 @@ import { useEffect, useState } from 'react';
 
 const useHome = () => {
   const user = useAppSelector(state => state.auth.user);
+  const navigation = useAppNavigation();
+
   const dispatch = useAppDispatch();
 
   const [homeData, setHomeData] = useState<RootHome>();
@@ -38,30 +41,46 @@ const useHome = () => {
       label: 'Đang thực hiện',
       value: homeData?.work_of_day?.quantity,
       color: '#3b82f6',
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate('ListJobTodayScreen', { state: 'today' }),
       icon: 'pending-actions',
     },
     {
       label: 'Đã hoàn thành',
       value: homeData?.work_done?.quantity,
       color: '#22c55e',
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate('ListJobTodayScreen', { state: 'work_due' }),
       icon: 'check-circle',
     },
     {
       label: 'Trễ hạn',
       value: homeData?.work_overday?.quantity,
       color: '#f43f5e',
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate('ListJobTodayScreen', { state: 'over_day' }),
       icon: 'warning',
     },
   ];
+
+  const handleNavigate = (id: number) => {
+    navigation.navigate('DetailRepairScreen', {
+      id: id,
+      onGoBack: handleGetDataHome,
+    });
+  };
+
+  const handleNavigateSetting = () => {
+    navigation.navigate('SettingScreen');
+  };
 
   return {
     homeData,
     summary,
     showSkeleton,
-    handleGetDataHome
+    handleGetDataHome,
+    handleNavigate,
+    handleNavigateSetting
   };
 };
 

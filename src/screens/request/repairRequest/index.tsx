@@ -3,13 +3,14 @@ import SizeBox from '@/components/SizeBox';
 import { getSateColor, getSateItem } from '@/utils/stateWork';
 import Icon from '@react-native-vector-icons/material-icons';
 import moment from 'moment';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { FlatList, Image, Pressable, Text, View } from 'react-native';
 import { RootRequest } from '../types';
 import useRepairRequest from './hooks/useRepairRequest';
 import { styles } from './styles';
 import FabMenu from '@/components/FAB';
 import { appEvent } from '@/utils/appEvent';
+import JobListSkeleton from '@/components/skeletons/ListJobSkeleton';
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
@@ -34,50 +35,57 @@ export default function RequestListScreen() {
     hasMore,
     navigation,
     handleReloadwhenBack,
+    showSkeleton,
   } = useRepairRequest();
 
   return (
-    <View style={styles.container}>
-      <AppFlatList
-        data={listRequest}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }: { item: RootRequest }) => (
-          <Pressable
-            onPress={() => {
-              navigation.navigate('DetailRequestScreen', {
-                id: item.id,
+    <Fragment>
+      {showSkeleton ? (
+        <JobListSkeleton />
+      ) : (
+        <View style={styles.container}>
+          <AppFlatList
+            data={listRequest}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }: { item: RootRequest }) => (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('DetailRequestScreen', {
+                    id: item.id,
+                    onGoBack: handleReloadwhenBack,
+                  });
+                }}
+              >
+                <RequestCard item={item} />
+              </Pressable>
+            )}
+            contentContainerStyle={{ padding: 16 }}
+            onRefresh={handleRefresh}
+            onLoadMore={handleLoadMore}
+            loading={loading}
+            refreshing={refreshing}
+            hasMore={hasMore}
+          />
+
+          <FabMenu
+            onNavigateCreateRepair={() => {
+              navigation.navigate('CreateRepairRequestScreen', {
+                id: -1,
                 onGoBack: handleReloadwhenBack,
               });
             }}
-          >
-            <RequestCard item={item} />
-          </Pressable>
-        )}
-        contentContainerStyle={{ padding: 16 }}
-        onRefresh={handleRefresh}
-        onLoadMore={handleLoadMore}
-        loading={loading}
-        refreshing={refreshing}
-        hasMore={hasMore}
-      />
-
-      <FabMenu
-        onNavigateCreateRepair={() => {
-          navigation.navigate('CreateRepairRequestScreen', {
-            id: -1,
-            onGoBack: handleReloadwhenBack,
-          });
-        }}
-        onNavigateCreateIssue={() => {
-          navigation.navigate('CreateReportProbemScreen', {
-            id: -1,
-            onGoBack: async () => {
-              appEvent.emit('reload_report_screen');
-            },
-          });
-        }}
-      />
-    </View>
+            onNavigateCreateIssue={() => {
+              navigation.navigate('CreateReportProbemScreen', {
+                id: -1,
+                onGoBack: async () => {
+                  appEvent.emit('reload_report_screen');
+                },
+              });
+            }}
+          />
+        </View>
+      )}
+    </Fragment>
   );
 }
 

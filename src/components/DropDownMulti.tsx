@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import AppInput from './AppInput';
+import { PRIMARY } from '@/utils/color';
 
 export interface DropdownAppType {
   id: any;
@@ -77,18 +78,20 @@ interface PropsModalMulti {
   onChange: (vals: DropdownAppType[]) => void;
   visible: boolean;
   onClose: () => void;
+  onDone?: () => void;
 }
 
-const ModalMultiDropdown = ({
+export const ModalMultiDropdown = ({
   options,
   values,
   onChange,
   visible,
   onClose,
+  onDone,
 }: PropsModalMulti) => {
   const [search, setSearch] = useState('');
 
-  const filteredOptions = options.filter(item =>
+  const filteredOptions = options?.filter(item =>
     item.value.toLowerCase().includes(search.toLowerCase()),
   );
 
@@ -146,7 +149,7 @@ const ModalMultiDropdown = ({
                     <Text style={{ flex: 1 }}>{item.value}</Text>
 
                     {selected && (
-                      <Icon name="check" size={20} color="#1337ec" />
+                      <Icon name="check" size={20} color={PRIMARY} />
                     )}
                   </Pressable>
                 );
@@ -154,7 +157,13 @@ const ModalMultiDropdown = ({
             />
 
             {values.length > 0 && (
-              <Pressable style={styles.doneButton} onPress={onClose}>
+              <Pressable
+                style={styles.doneButton}
+                onPress={() => {
+                  onClose();
+                  onDone?.();
+                }}
+              >
                 <Text style={{ color: '#fff' }}>Xong ({values.length})</Text>
               </Pressable>
             )}
@@ -205,7 +214,7 @@ const styles = StyleSheet.create({
   },
   doneButton: {
     marginTop: 12,
-    backgroundColor: '#1337ec',
+    backgroundColor: PRIMARY,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
@@ -220,7 +229,7 @@ const styles = StyleSheet.create({
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1337ec',
+    backgroundColor: PRIMARY,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 20,

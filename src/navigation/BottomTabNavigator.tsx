@@ -7,10 +7,13 @@ import MaterialIcons from '@react-native-vector-icons/material-icons';
 import ReportScreen from '@/screens/request/createReportProblem';
 import RequestTopTabs from '@/screens/request';
 import WorkTopTabs from '@/screens/works';
+import { Text, View } from 'react-native';
+import { AppText } from '@/components';
+import DashboardScreen from '@/screens/dashboard';
 
 export type MainTabParamList = {
   Home: undefined;
-  Profile: undefined;
+  Dashboard: undefined;
   Calendar: undefined;
   Report: undefined;
   Task: undefined;
@@ -21,19 +24,48 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: '#005a3c',
+        // tabBarLabel: ({ focused }) => {
+        //   const color = focused ? '#005a3c' : '#999';
+
+        //   switch (route.name) {
+        //     case 'Home':
+        //       return <Text>Trang chủ</Text>;
+
+        //     case 'Profile':
+        //       return <Text>Trang chủ</Text>;
+
+        //     case 'Calendar':
+        //       return <Text>Trang chủ</Text>;
+
+        //     case 'Report':
+        //       return <Text>Trang chủ</Text>;
+
+        //     case 'Task':
+        //       return <Text>Trang chủ</Text>;
+
+        //     default:
+        //       return null;
+        //   }
+        // },
         tabBarIcon: ({ focused }) => {
           const color = focused ? '#005a3c' : '#999';
 
           switch (route.name) {
             case 'Home':
-              return <MaterialIcons name="home" size={26} color={color} />;
+              return (
+                <View>
+                  <MaterialIcons name="home" size={26} color={color} />
+                </View>
+              );
 
-            case 'Profile':
-              return <MaterialIcons name="person" size={26} color={color} />;
+            case 'Dashboard':
+              return <MaterialIcons name="dashboard" size={26} color={color} />;
 
             case 'Calendar':
               return (
@@ -56,11 +88,31 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Task" component={WorkTopTabs} />
-      <Tab.Screen name="Report" component={RequestTopTabs} />
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Calendar" component={WorkTopTabs} />
-      <Tab.Screen name="Profile" component={LoginScreen} />
+      <Tab.Screen
+        name="Task"
+        component={WorkTopTabs}
+        options={{ tabBarLabel: 'Công việc' }}
+      />
+      <Tab.Screen
+        name="Report"
+        component={RequestTopTabs}
+        options={{ tabBarLabel: 'Yêu cầu' }}
+      />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ tabBarLabel: 'Trang chủ' }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={WorkTopTabs}
+        options={{ tabBarLabel: 'Lịch' }}
+      />
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{ tabBarLabel: 'Báo cáo' }}
+      />
 
       {/* <Tab.Screen name="Report" component={ReportScreen} /> */}
     </Tab.Navigator>

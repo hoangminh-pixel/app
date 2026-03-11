@@ -8,14 +8,14 @@ interface Payload {
   item_per_page: number;
   maintenance_type: string[];
   filter_date?: string;
-  check_today?: string;
-  check_today_done?: string;
-  stage: [];
-  check_due?: string;
-  check_overday?: string;
-  asset_category_level1_id?: string;
-  filtered: string;
-  group: string;
+  check_today?: boolean;
+  check_today_done?: boolean;
+  stage?: [];
+  check_due?: boolean;
+  check_overday?: boolean;
+  asset_category_level1_id?: any;
+  filtered?: string;
+  group?: string;
 }
 
 export interface ResponseWorkRepair {
