@@ -18,4 +18,7 @@ export type MainStackParamList = {
   DetailRequestScreen: { id: number; onGoBack: () => Promise<void> };
   ListJobTodayScreen: { state: string };
   SettingScreen: undefined;
+  QRScannerScreen: {
+    onScanSuccess?: (data: any) => void;
+  };
 };

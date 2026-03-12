@@ -10,6 +10,7 @@ import WorkTopTabs from '@/screens/works';
 import { Text, View } from 'react-native';
 import { AppText } from '@/components';
 import DashboardScreen from '@/screens/dashboard';
+import CalendarScreen from '@/screens/calendar';
 
 export type MainTabParamList = {
   Home: undefined;
@@ -105,7 +106,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Calendar"
-        component={WorkTopTabs}
+        component={CalendarScreen}
         options={{ tabBarLabel: 'Lịch' }}
       />
       <Tab.Screen

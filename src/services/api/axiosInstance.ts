@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-export const API_URL = 'https://demo-cmms.izisolution.vn/icmms_webservice'; 
+export const API_URL = 'https://demo-cmms.izisolution.vn';
 
-// export const API_URL = 'https://qlts.dragondoson.vn/icmms_webservice'; 
 
-// export const API_URL = 'http://localhost:8069/icmms_webservice';
+export const CMMS_PREFIX = '/icmms_webservice';
+
+export const ASM_PREFIX = '/api/v1/erpviet_asm';
+
 
 export const axiosInstance = axios.create({
-  baseURL: API_URL, 
+  baseURL: API_URL,
   timeout: 50000,
   headers: {
     'Content-Type': 'application/json',

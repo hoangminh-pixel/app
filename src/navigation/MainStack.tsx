@@ -12,6 +12,7 @@ import CreateReportProbemScreen from '@/screens/request/createReportProblem';
 import DetailRequestScreen from '@/screens/request/detailRequest';
 import ListJobTodayScreen from '@/screens/listJobToday';
 import SettingScreen from '@/screens/setting';
+import QRScannerScreen from '@/screens/scanBarcode';
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 export default function MainStack() {
@@ -43,6 +44,7 @@ export default function MainStack() {
       />
       <Stack.Screen name="ListJobTodayScreen" component={ListJobTodayScreen} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
+      <Stack.Screen name="QRScannerScreen" component={QRScannerScreen} />
     </Stack.Navigator>
   );
 }

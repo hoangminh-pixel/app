@@ -19,6 +19,7 @@ import { showErrorToast, showSuccesToast } from '@/utils/toast';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { DetailRequestResponse } from '../../types';
+import { RootScanQR } from '@/screens/scanBarcode/hooks/useScanCode';
 
 const useCreateRepairRequest = () => {
   const user = useAppSelector(state => state.auth.user);
@@ -63,6 +64,8 @@ const useCreateRepairRequest = () => {
   const [keyboardShouldPersistTaps, setKeyboardShouldPersistTaps] = useState<
     boolean | 'always' | 'never' | 'handled' | undefined
   >('always');
+  const [barcodeScan, setBarcodeScan] = useState<RootScanQR>();
+  const [isCreateRequest, setIsCreateRequest] = useState(false);
 
   useEffect(() => {
     initData();
@@ -86,7 +89,9 @@ const useCreateRepairRequest = () => {
   }, [zone?.id]);
 
   useEffect(() => {
-    if (asset) {
+    if (asset && isCreateRequest) {
+      console.log('has barcodeScan', barcodeScan);
+
       setLocation({
         id: asset?.mro_location_id?.id,
         value: asset?.mro_location_id?.name,
@@ -113,7 +118,41 @@ const useCreateRepairRequest = () => {
   }, [asset]);
 
   useEffect(() => {
-    if (func) {
+    if (barcodeScan) {
+      setIsCreateRequest(false);
+      
+      setAsset({
+        id: barcodeScan?.asset_id?.id,
+        value: barcodeScan?.asset_id?.name,
+      });
+      setLocation({
+        id: barcodeScan?.mro_location_id?.id,
+        value: barcodeScan?.mro_location_id?.name,
+      });
+      setDeviceGroup({
+        id: barcodeScan?.asset_category_level1_id?.id,
+        value: barcodeScan?.asset_category_level1_id?.name,
+      });
+      setZone({
+        id: barcodeScan?.zone_id?.id,
+        value: barcodeScan?.zone_id?.name,
+      });
+      setReceiveDepartment({
+        id: barcodeScan?.request_department_id?.id,
+        value: barcodeScan?.request_department_id?.name,
+      });
+      setMaintenanceGroup({
+        id: barcodeScan?.receive_department_id?.id,
+        value: barcodeScan?.receive_department_id?.name,
+      });
+      setPriority(null);
+      setFunc(null);
+      setBarcodeScan(undefined);
+    }
+  }, [barcodeScan]);
+
+  useEffect(() => {
+    if (func && isCreateRequest) {
       setPriority({
         id: func?.level_priority?.id,
         value: func?.level_priority?.name,
@@ -534,6 +573,14 @@ const useCreateRepairRequest = () => {
     setKeyboardShouldPersistTaps('always');
   };
 
+  const handleNavigateScanScreen = () => {
+    navigation.navigate('QRScannerScreen', {
+      onScanSuccess: data => {
+        console.log('data', data);
+        setBarcodeScan(data);
+      },
+    });
+  };
   return {
     requestEmployee,
     listDeviceGroup,
@@ -586,6 +633,8 @@ const useCreateRepairRequest = () => {
     onBlurInput,
     keyboardShouldPersistTaps,
     openLibrary,
+    handleNavigateScanScreen,
+    setIsCreateRequest,
   };
 };
 

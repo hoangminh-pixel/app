@@ -1,4 +1,4 @@
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 import { ApiResponse } from '../api/types';
 
 interface LoginPayload {
@@ -32,7 +32,7 @@ interface LoginResponse {
 }
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
-  const response = await axiosInstance.post('/login', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/login`, payload);
 
   return response.data.result?.[0];
 };

@@ -37,6 +37,7 @@ export default function CreateReportProbemScreen() {
     onBlurInput,
     keyboardShouldPersistTaps,
     openLibrary,
+    handleNavigateScanScreen,
   } = useCreateReportProblem();
 
   return (
@@ -46,6 +47,11 @@ export default function CreateReportProbemScreen() {
         title="Báo sự cố"
         showBack
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        actions={
+          <Pressable onPress={handleNavigateScanScreen}>
+            <Icon name="qr-code-scanner" size={24} color="white" />
+          </Pressable>
+        }
       >
         <SizeBox height={16} />
         <Section title="Thông tin chung" icon="info" />

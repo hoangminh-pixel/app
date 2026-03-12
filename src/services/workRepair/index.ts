@@ -1,5 +1,5 @@
 import { createFormData } from '@/utils/extension';
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 
 interface Payload {
   login: string;
@@ -217,7 +217,7 @@ export interface AssignEmployeeIds {
 export const getListJob = async (
   payload: Payload,
 ): Promise<ResponseWorkRepair> => {
-  const response = await axiosInstance.post('/mro_order', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/mro_order`, payload);
 
   return response.data.result?.[0];
 };
@@ -507,7 +507,7 @@ export interface TaskId {
 export const getDetailJob = async (
   payload: PayloadDetailJob,
 ): Promise<RootDetailJob> => {
-  const response = await axiosInstance.post('/get_detail_mro_order', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_detail_mro_order`, payload);
 
   return response.data.result?.[0];
 };
@@ -527,7 +527,7 @@ interface AssignWorkPayload {
 }
 
 export const assignWork = async (payload: AssignWorkPayload): Promise<any> => {
-  const response = await axiosInstance.post('/action_approve_order', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/action_approve_order`, payload);
 
   return response.data.result?.[0];
 };
@@ -547,7 +547,7 @@ export const doneDetailJob = async (
   payload: DoneDetailJobPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/add_update_mro_order_form',
+    `${CMMS_PREFIX}/add_update_mro_order_form`,
     createFormData({ files: payload?.imageFile, body: payload }),
     {
       headers: {

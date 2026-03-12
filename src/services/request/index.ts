@@ -1,5 +1,5 @@
 import { createFormData } from '@/utils/extension';
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 
 interface ListMroRequestPayload {
   login: string;
@@ -14,7 +14,7 @@ interface ListMroRequestPayload {
 export const getListMroRequest = async (
   payload: ListMroRequestPayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/mro_request', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/mro_request`, payload);
 
   return response.data.result?.[0];
 };
@@ -27,7 +27,7 @@ export const getInforDetailMroRequest = async (
   payload: MroRequestPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/create_detail_mro_request',
+    `${CMMS_PREFIX}/create_detail_mro_request`,
     payload,
   );
 
@@ -38,7 +38,7 @@ export const getListGroupAsset = async (
   payload: MroRequestPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/get_asset_category_level1',
+    `${CMMS_PREFIX}/get_asset_category_level1`,
     payload,
   );
 
@@ -48,13 +48,13 @@ export const getListGroupAsset = async (
 export const getDepartment = async (
   payload: MroRequestPayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/get_mro_department', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_mro_department`, payload);
 
   return response.data.result?.[0];
 };
 
 export const getZone = async (payload: MroRequestPayload): Promise<any> => {
-  const response = await axiosInstance.post('/get_zone', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_zone`, payload);
 
   return response.data.result?.[0];
 };
@@ -63,7 +63,7 @@ export const getPriorityOption = async (
   payload: MroRequestPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/get_mro_priority_option',
+    `${CMMS_PREFIX}/get_mro_priority_option`,
     payload,
   );
 
@@ -73,7 +73,7 @@ export const getPriorityOption = async (
 export const getListAsset = async (
   payload: MroRequestPayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/get_asset', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_asset`, payload);
 
   return response.data.result?.[0];
 };
@@ -88,7 +88,7 @@ interface ListServicePayload {
 export const getListService = async (
   payload: ListServicePayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/get_mro_request_cause', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_mro_request_cause`, payload);
 
   return response.data.result?.[0];
 };
@@ -103,7 +103,7 @@ export const getListFunction = async (
   payload: ListFunctionPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/get_asset_category_level2',
+    `${CMMS_PREFIX}/get_asset_category_level2`,
     payload,
   );
 
@@ -117,7 +117,7 @@ interface LocationPayload {
 }
 
 export const getLocation = async (payload: LocationPayload): Promise<any> => {
-  const response = await axiosInstance.post('/get_location', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_location`, payload);
 
   return response.data.result?.[0];
 };
@@ -152,7 +152,7 @@ export const createMroRequest = async (
   payload: CreateMroRequestPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/add_update_mro_request_form',
+    `${CMMS_PREFIX}/add_update_mro_request_form`,
     createFormData({ files: payload?.imageFile, body: payload }),
     {
       headers: {

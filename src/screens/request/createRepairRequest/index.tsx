@@ -78,6 +78,8 @@ export default function CreateRepairRequestScreen() {
     onBlurInput,
     keyboardShouldPersistTaps,
     openLibrary,
+    handleNavigateScanScreen,
+    setIsCreateRequest,
   } = useCreateRepairRequest();
 
   if (showSkeleton)
@@ -88,6 +90,11 @@ export default function CreateRepairRequestScreen() {
         showBack
         paddingHorizontal={0}
         containerStyle={{ flex: 1 }}
+        actions={
+          <Pressable onPress={handleNavigateScanScreen}>
+            <Icon name="qr-code-scanner" size={24} color="white" />
+          </Pressable>
+        }
       >
         <RequestRepairSkeleton />
       </BasePage>
@@ -101,6 +108,11 @@ export default function CreateRepairRequestScreen() {
         showBack
         bottomOffset={isAndroid ? 100 : 30}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        actions={
+          <Pressable onPress={handleNavigateScanScreen}>
+            <Icon name="qr-code-scanner" size={24} color="white" />
+          </Pressable>
+        }
       >
         <SizeBox height={16} />
         <Section title="Thông tin chung" icon="info" />
@@ -117,7 +129,10 @@ export default function CreateRepairRequestScreen() {
           label="Thiết bị"
           value={asset?.value}
           options={listAsset}
-          onChange={setAsset}
+          onChange={v => {
+            setAsset(v);
+            setIsCreateRequest(true);
+          }}
         />
         <SizeBox height={10} />
 

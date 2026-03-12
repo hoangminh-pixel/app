@@ -1,14 +1,14 @@
 import { BasePage } from '@/components';
 import SizeBox from '@/components/SizeBox';
+import { logout } from '@/redux/slices/authSlice';
+import { useAppDispatch } from '@/redux/store/hooks';
+import { PRIMARY } from '@/utils/color';
+import { removeUserInfo } from '@/utils/storage';
+import { showErrorToast } from '@/utils/toast';
+import Icon from '@react-native-vector-icons/material-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Pressable } from 'react-native-gesture-handler';
-import Icon from '@react-native-vector-icons/material-icons';
-import { PRIMARY } from '@/utils/color';
-import { removeUserInfo } from '@/utils/storage';
-import { useAppDispatch } from '@/redux/store/hooks';
-import { logout } from '@/redux/slices/authSlice';
-import { showErrorToast } from '@/utils/toast';
 
 export default function SettingScreen() {
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function SettingScreen() {
   return (
     <BasePage
       showBack
-      containerStyle={{ backgroundColor: '#f6f6f8' }}
+      containerStyle={{ backgroundColor: 'white' }}
       title="Cài đặt"
       edges={['bottom']}
     >
@@ -33,7 +33,9 @@ export default function SettingScreen() {
       <View style={styles.footer}>
         <LogoutButton onPress={handleLogOut} />
 
-        <Text style={styles.footerText}>ERPViet © 2026</Text>
+        <Text style={styles.footerText}>
+          ERPViet © {new Date().getFullYear()}
+        </Text>
       </View>
     </BasePage>
   );

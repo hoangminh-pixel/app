@@ -1,4 +1,4 @@
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 
 interface CountTotalWorkPayload {
   login: string;
@@ -9,7 +9,7 @@ export const countTotalWork = async (
   payload: CountTotalWorkPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/count_total_work',
+    `${CMMS_PREFIX}/count_total_work`,
     payload,
   );
 

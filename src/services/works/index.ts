@@ -1,5 +1,5 @@
 import { createFormData } from '@/utils/extension';
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 
 interface ActionUpdateChecklistPayload {
   login: string;
@@ -19,7 +19,7 @@ export const actionUpdateChecklist = async (
   payload: ActionUpdateChecklistPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/action_update_checklist_form',
+    `${CMMS_PREFIX}/action_update_checklist_form`,
     createFormData({ files: payload?.imageFile, body: payload }),
     {
       headers: {
@@ -41,7 +41,7 @@ interface ListSuppliesPayload {
 export const getListSuppliesData = async (
   payload: ListSuppliesPayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/get_product', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_product`, payload);
 
   return response.data.result?.[0];
 };
@@ -55,7 +55,7 @@ export const getListSuppliesAdded = async (
   payload: ListSuppliesAddedPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/create_detail_returned_part',
+    `${CMMS_PREFIX}/create_detail_returned_part`,
     payload,
   );
 
@@ -66,7 +66,7 @@ export const getInfoAddSupplies = async (
   payload: ListSuppliesAddedPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/create_detail_additional_parts',
+    `${CMMS_PREFIX}/create_detail_additional_parts`,
     payload,
   );
 
@@ -85,7 +85,7 @@ export const addSuppliesService = async (
   payload: AddSuppliesPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/additional_parts_action_done',
+    `${CMMS_PREFIX}/additional_parts_action_done`,
     payload,
   );
 
@@ -101,7 +101,7 @@ interface DetailRequestPayload {
 export const getDetailRequest = async (
   payload: DetailRequestPayload,
 ): Promise<any> => {
-  const response = await axiosInstance.post('/get_detail_mro_request', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_detail_mro_request`, payload);
 
   return response.data.result?.[0];
 };
@@ -114,7 +114,7 @@ export const getListDevices = async (
   payload: ListDevicesPayload,
 ): Promise<any> => {
   const response = await axiosInstance.post(
-    '/get_asset_category_level1',
+    `${CMMS_PREFIX}/get_asset_category_level1`,
     payload,
   );
 

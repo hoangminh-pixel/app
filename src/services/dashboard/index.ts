@@ -1,11 +1,11 @@
-import { axiosInstance } from '../api/axiosInstance';
+import { axiosInstance, CMMS_PREFIX } from '../api/axiosInstance';
 
 interface BusinessPayload {
   login: string;
   password: string;
 }
 export const getBusiness = async (payload: BusinessPayload): Promise<any> => {
-  const response = await axiosInstance.post('/get_business', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/get_business`, payload);
 
   return response.data.result?.[0];
 };
@@ -18,7 +18,7 @@ interface DashboardSummaryPayload {
   end_date: string;
 }
 export const getDashboardSummary = async (payload: DashboardSummaryPayload) => {
-  const response = await axiosInstance.post('/dashboard_summary', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/dashboard_summary`, payload);
 
   return response.data.result?.[0];
 };
@@ -35,7 +35,7 @@ interface MaintenanceJobPayload {
   check_done: boolean;
 }
 export const getMaintenanceJob = async (payload: MaintenanceJobPayload) => {
-  const response = await axiosInstance.post('/statistic_report_order', payload);
+  const response = await axiosInstance.post(`${CMMS_PREFIX}/statistic_report_order`, payload);
 
   return response.data.result?.[0];
 };

@@ -3,6 +3,7 @@ import useAppCamera from '@/hooks/useAppCamera';
 import { useAppNavigation, useAppRoute } from '@/navigation/NavigationService';
 import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
 import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
+import { RootScanQR } from '@/screens/scanBarcode/hooks/useScanCode';
 import {
   createMroRequest,
   getDepartment,
@@ -26,7 +27,8 @@ const useCreateReportProblem = () => {
 
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } =
+    useAppCamera();
 
   const [requestEmployee, setRequestEmployee] = useState('');
 
@@ -46,6 +48,8 @@ const useCreateReportProblem = () => {
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
 
+  const [barcodeScan, setBarcodeScan] = useState<RootScanQR>();
+
   const [keyboardShouldPersistTaps, setKeyboardShouldPersistTaps] = useState<
     boolean | 'always' | 'never' | 'handled' | undefined
   >('always');
@@ -62,6 +66,25 @@ const useCreateReportProblem = () => {
       handleGetLocation();
     }
   }, [zone?.id]);
+
+  useEffect(() => {
+    if (barcodeScan) {
+      setLocation({
+        id: barcodeScan?.mro_location_id?.id,
+        value: barcodeScan?.mro_location_id?.name,
+      });
+
+      setZone({
+        id: barcodeScan?.zone_id?.id,
+        value: barcodeScan?.zone_id?.name,
+      });
+
+      setMaintenanceGroup({
+        id: barcodeScan?.receive_department_id?.id,
+        value: barcodeScan?.receive_department_id?.name,
+      });
+    }
+  }, [barcodeScan]);
 
   const getInfo = async () => {
     try {
@@ -246,6 +269,15 @@ const useCreateReportProblem = () => {
     setKeyboardShouldPersistTaps('always');
   };
 
+  const handleNavigateScanScreen = () => {
+    navigation.navigate('QRScannerScreen', {
+      onScanSuccess: data => {
+        console.log('data', data);
+        setBarcodeScan(data);
+      },
+    });
+  };
+
   return {
     requestEmployee,
     listReceiveDepartment,
@@ -273,7 +305,8 @@ const useCreateReportProblem = () => {
     onFocusInput,
     onBlurInput,
     keyboardShouldPersistTaps,
-    openLibrary
+    openLibrary,
+    handleNavigateScanScreen,
   };
 };
 
