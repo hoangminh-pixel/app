@@ -8,17 +8,20 @@ import { getSateColor, getSateItem } from '@/utils/stateWork';
 import { PRIMARY } from '@/utils/color';
 import { useAppSelector } from '@/redux/store/hooks';
 import { ADMIN, TECH } from '@/utils/appConstant';
+import moment from 'moment';
 
 type Props = {
   detail: Data | undefined;
   onOpenAssignModal: () => void;
   onGetJob: () => void;
+  isMaintenance?: boolean;
 };
 
 export const HeaderComponent = ({
   detail,
   onOpenAssignModal,
   onGetJob,
+  isMaintenance,
 }: Props) => {
   const role = useAppSelector(state => state.auth.user?.role ?? '');
   const user = useAppSelector(state => state.auth.user);
@@ -71,6 +74,10 @@ export const HeaderComponent = ({
       <View style={styles.section}>
         <View style={styles.rowBetween}>
           <View style={{ flex: 1 }}>
+            <Text style={styles.code}>{detail?.name?.name}</Text>
+            <Text style={styles.title}>
+              {detail?.name_related?.name_related}
+            </Text>
             <View style={styles.statusBadge}>
               <Text
                 style={[
@@ -85,10 +92,6 @@ export const HeaderComponent = ({
                 {getSateItem({ state: detail?.state?.state ?? '' })}
               </Text>
             </View>
-            <Text style={styles.title}>
-              {detail?.name_related?.name_related}
-            </Text>
-            <Text style={styles.code}>{detail?.name?.name}</Text>
           </View>
 
           {shouldShowButtonTech && (
@@ -123,7 +126,14 @@ export const HeaderComponent = ({
       <View style={{ alignItems: 'flex-start' }}>
         <Tag icon="location-on" label={detail?.mro_location_id.name} />
         <SizeBox height={8} />
-        <Tag icon="calendar-today" label="25/12/2024" />
+        <Tag
+          icon="calendar-today"
+          label={`${moment(detail?.date_scheduled?.date_scheduled).format(
+            'DD/MM',
+          )} - ${moment(detail?.date_execution?.date_execution).format(
+            'DD/MM',
+          )}`}
+        />
       </View>
 
       <SizeBox height={12} />
@@ -171,12 +181,9 @@ export const HeaderComponent = ({
           </View>
         )}
 
-        {detail?.description?.description && (
+        {!isMaintenance && detail?.description?.description && (
           <View style={styles.section}>
-            <SectionTitle
-              icon="settings-input-component"
-              title="Mô tả"
-            />
+            <SectionTitle icon="settings-input-component" title="Mô tả" />
             <Text style={{ fontWeight: 'normal', fontSize: 14 }}>
               {detail?.description?.description}
             </Text>
@@ -252,18 +259,22 @@ const PersonnelCard = ({ name, role, icon, primary }: any) => {
           {/* STRING CASE */}
           {!isArray && (
             <>
-              <Text style={{ fontWeight: '600' }}>
-                {name || 'Chưa có nhân sự'}
-              </Text>
               {!!role && (
                 <Text style={{ fontSize: 12, color: '#666' }}>{role}</Text>
               )}
+              <Text style={{ fontWeight: '600' }}>
+                {name || 'Chưa có nhân sự'}
+              </Text>
             </>
           )}
 
           {/* ARRAY CASE */}
           {isArray && (
             <>
+              {!!role && (
+                <Text style={{ fontSize: 12, color: '#666' }}>{role}</Text>
+              )}
+
               {isEmptyArray ? (
                 <Text style={{ fontWeight: '600' }}>Chưa có nhân sự</Text>
               ) : (
@@ -274,10 +285,6 @@ const PersonnelCard = ({ name, role, icon, primary }: any) => {
                     </Text>
                   </View>
                 ))
-              )}
-
-              {!!role && (
-                <Text style={{ fontSize: 12, color: '#666' }}>{role}</Text>
               )}
             </>
           )}

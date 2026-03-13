@@ -85,6 +85,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
     removeMedia,
     displayMedia,
     openLibrary,
+    handleNavigateDetailMedia,
   } = useItemChecklist({ item, checklistType: type });
 
   return (
@@ -180,6 +181,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
             media={displayMedia}
             removeMedia={removeMedia}
             openLibrary={openLibrary}
+            handleNavigateDetailMedia={handleNavigateDetailMedia}
           />
         )}
         {type === 'measure' && (
@@ -335,12 +337,20 @@ function MediaSection({
   media,
   removeMedia,
   openLibrary,
+  handleNavigateDetailMedia,
 }: {
   openCamera: () => void;
   openPhoto: () => void;
   media: MediaTypeRes[];
   openLibrary: () => void;
   removeMedia: (index: number) => void;
+  handleNavigateDetailMedia: ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => void;
 }) {
   return (
     <View>
@@ -363,12 +373,19 @@ function MediaSection({
         {media.map((item, index) =>
           item.type === 'photo' ? (
             <View key={index} style={styles.imageWrapper}>
-              <Image
-                source={{
-                  uri: item.url,
+              <Pressable
+                onPress={() => {
+                  handleNavigateDetailMedia({ url: item.url, type: 'photo' });
                 }}
-                style={styles.imageChecklist}
-              />
+              >
+                <Image
+                  source={{
+                    uri: item.url,
+                  }}
+                  style={styles.imageChecklist}
+                />
+              </Pressable>
+
               <Pressable
                 style={styles.removeBtn}
                 onPress={() => removeMedia(index)}
@@ -378,13 +395,20 @@ function MediaSection({
             </View>
           ) : (
             <View key={index} style={styles.imageWrapper}>
-              <Video
-                style={[styles.imageChecklist, { overflow: 'hidden' }]}
-                source={{ uri: item.url }}
-                muted
-                repeat
-                resizeMode="cover"
-              />
+              <Pressable
+                onPress={() => {
+                  handleNavigateDetailMedia({ url: item.url, type: 'video' });
+                }}
+              >
+                <Video
+                  style={[styles.imageChecklist, { overflow: 'hidden' }]}
+                  source={{ uri: item.url }}
+                  muted
+                  repeat
+                  resizeMode="cover"
+                />
+              </Pressable>
+
               <Pressable
                 style={styles.removeBtn}
                 onPress={() => removeMedia(index)}

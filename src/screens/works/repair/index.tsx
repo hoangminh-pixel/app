@@ -52,6 +52,7 @@ export default function RepairScreen() {
     navigation,
     handleReloadWhenBack,
     showSkeleton,
+    isAdmin,
   } = useRepair();
 
   return (
@@ -103,7 +104,11 @@ export default function RepairScreen() {
                 });
               }}
             >
-              <JobCard item={item} onPressAssignWork={handleAssignWork} />
+              <JobCard
+                item={item}
+                onPressAssignWork={handleAssignWork}
+                isAdmin={isAdmin}
+              />
             </Pressable>
           )}
           contentContainerStyle={{ padding: 16 }}

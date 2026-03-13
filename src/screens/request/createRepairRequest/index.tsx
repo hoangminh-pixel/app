@@ -80,6 +80,7 @@ export default function CreateRepairRequestScreen() {
     openLibrary,
     handleNavigateScanScreen,
     setIsCreateRequest,
+    handleNavigateDetailMedia,
   } = useCreateRepairRequest();
 
   if (showSkeleton)
@@ -253,22 +254,34 @@ export default function CreateRepairRequestScreen() {
             );
             return isImage ? (
               <View key={index} style={styles.imageWrapper}>
-                <Image
-                  source={{
-                    uri: item.image_url || item.value,
+                <Pressable
+                  onPress={() => {
+                    handleNavigateDetailMedia({ url: item.url, type: 'photo' });
                   }}
-                  style={styles.imageChecklist}
-                />
+                >
+                  <Image
+                    source={{
+                      uri: item.url,
+                    }}
+                    style={styles.imageChecklist}
+                  />
+                </Pressable>
               </View>
             ) : (
               <View key={index} style={styles.imageWrapper}>
-                <Video
-                  style={[styles.imageChecklist, { overflow: 'hidden' }]}
-                  source={{ uri: item.image_url || item.value }}
-                  muted
-                  repeat
-                  resizeMode="cover"
-                />
+                <Pressable
+                  onPress={() => {
+                    handleNavigateDetailMedia({ url: item.url, type: 'video' });
+                  }}
+                >
+                  <Video
+                    style={[styles.imageChecklist, { overflow: 'hidden' }]}
+                    source={{ uri: item.url }}
+                    muted
+                    repeat
+                    resizeMode="cover"
+                  />
+                </Pressable>
               </View>
             );
           })}
@@ -280,12 +293,19 @@ export default function CreateRepairRequestScreen() {
           {mediaResponse.map((item, index) =>
             item.type === 'photo' ? (
               <View key={index} style={styles.imageWrapper}>
-                <Image
-                  source={{
-                    uri: item.url,
+                <Pressable
+                  onPress={() => {
+                    handleNavigateDetailMedia({ url: item.url, type: 'photo' });
                   }}
-                  style={styles.imageChecklist}
-                />
+                >
+                  <Image
+                    source={{
+                      uri: item.url,
+                    }}
+                    style={styles.imageChecklist}
+                  />
+                </Pressable>
+
                 <Pressable
                   style={styles.removeBtn}
                   onPress={() => removeMedia(index)}
@@ -295,13 +315,20 @@ export default function CreateRepairRequestScreen() {
               </View>
             ) : (
               <View key={index} style={styles.imageWrapper}>
-                <Video
-                  style={[styles.imageChecklist, { overflow: 'hidden' }]}
-                  source={{ uri: item.url }}
-                  muted
-                  repeat
-                  resizeMode="cover"
-                />
+                <Pressable
+                  onPress={() => {
+                    handleNavigateDetailMedia({ url: item.url, type: 'video' });
+                  }}
+                >
+                  <Video
+                    style={[styles.imageChecklist, { overflow: 'hidden' }]}
+                    source={{ uri: item.url }}
+                    muted
+                    repeat
+                    resizeMode="cover"
+                  />
+                </Pressable>
+
                 <Pressable
                   style={styles.removeBtn}
                   onPress={() => removeMedia(index)}
@@ -352,7 +379,7 @@ export default function CreateRepairRequestScreen() {
                 onPress={handleShowRejectModal}
               >
                 <Icon name="cancel" size={22} color="white" />
-                <AppText style={styles.submitText}>Huỷ</AppText>
+                <AppText style={styles.submitText}>Từ chối</AppText>
               </Pressable>
             </View>
             <SizeBox width={8} />

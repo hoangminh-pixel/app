@@ -12,7 +12,7 @@ import {
   ListRequest,
   ResponseWorkRepair,
 } from '@/services/workRepair';
-import { ITEM_PER_PAGE, USER } from '@/utils/appConstant';
+import { ADMIN, ITEM_PER_PAGE, USER } from '@/utils/appConstant';
 import { useEffect, useRef, useState } from 'react';
 import { findNodeHandle, UIManager, View } from 'react-native';
 import { useAppNavigation } from '@/navigation/NavigationService';
@@ -23,6 +23,7 @@ const useMaintenance = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth.user);
   const role = useAppSelector(state => state.auth.user?.role);
+  const isAdmin = role === ADMIN;
 
   const [search, setSearch] = useState('');
   const [selectedButton, setSelectedButton] = useState('today');
@@ -296,7 +297,8 @@ const useMaintenance = () => {
     dataMaintanenceFilter,
     navigation,
     handleReloadWhenBack,
-    showSkeleton
+    showSkeleton,
+    isAdmin
   };
 };
 

@@ -115,7 +115,6 @@ export const styles = StyleSheet.create({
   code: {
     fontSize: 12,
     color: '#161616',
-    marginBottom: 8,
   },
 
   infoRow: {

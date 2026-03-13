@@ -35,6 +35,7 @@ export default function DetailRequestScreen() {
     handleShowRejectModal,
     handleHideRejectModal,
     showSkeleton,
+    handleNavigateDetailMedia,
   } = useDetailRequest();
 
   if (showSkeleton)
@@ -193,22 +194,40 @@ export default function DetailRequestScreen() {
               );
               return isImage ? (
                 <View key={index} style={styles.imageWrapper}>
-                  <Image
-                    source={{
-                      uri: item.image_url || item.value,
+                  <Pressable
+                    onPress={() => {
+                      handleNavigateDetailMedia({
+                        url: item.image_url || item.value,
+                        type: 'photo',
+                      });
                     }}
-                    style={styles.imageChecklist}
-                  />
+                  >
+                    <Image
+                      source={{
+                        uri: item.image_url || item.value,
+                      }}
+                      style={styles.imageChecklist}
+                    />
+                  </Pressable>
                 </View>
               ) : (
                 <View key={index} style={styles.imageWrapper}>
-                  <Video
-                    style={[styles.imageChecklist, { overflow: 'hidden' }]}
-                    source={{ uri: item.image_url || item.value }}
-                    muted
-                    repeat
-                    resizeMode="cover"
-                  />
+                  <Pressable
+                    onPress={() => {
+                      handleNavigateDetailMedia({
+                        url: item.image_url || item.value,
+                        type: 'video',
+                      });
+                    }}
+                  >
+                    <Video
+                      style={[styles.imageChecklist, { overflow: 'hidden' }]}
+                      source={{ uri: item.image_url || item.value }}
+                      muted
+                      repeat
+                      resizeMode="cover"
+                    />
+                  </Pressable>
                 </View>
               );
             },
@@ -280,7 +299,7 @@ export default function DetailRequestScreen() {
                 onPress={handleShowRejectModal}
               >
                 <Icon name="cancel" size={22} color="white" />
-                <AppText style={styles.submitText}>Huỷ</AppText>
+                <AppText style={styles.submitText}>Từ chối</AppText>
               </Pressable>
             </View>
             <SizeBox width={8} />

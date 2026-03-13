@@ -120,7 +120,7 @@ const useCreateRepairRequest = () => {
   useEffect(() => {
     if (barcodeScan) {
       setIsCreateRequest(false);
-      
+
       setAsset({
         id: barcodeScan?.asset_id?.id,
         value: barcodeScan?.asset_id?.name,
@@ -377,14 +377,6 @@ const useCreateRepairRequest = () => {
     }
   };
 
-  const handleOpenLibrary = async () => {
-    try {
-      await openCamera('photo');
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
   const handleCreateMroRequest = async () => {
     if (!description || description === '') {
       showErrorToast({ content: 'Vui lòng nhập mô tả!' });
@@ -581,6 +573,16 @@ const useCreateRepairRequest = () => {
       },
     });
   };
+
+  const handleNavigateDetailMedia = ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => {
+    navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
+  };
   return {
     requestEmployee,
     listDeviceGroup,
@@ -635,6 +637,7 @@ const useCreateRepairRequest = () => {
     openLibrary,
     handleNavigateScanScreen,
     setIsCreateRequest,
+    handleNavigateDetailMedia,
   };
 };
 

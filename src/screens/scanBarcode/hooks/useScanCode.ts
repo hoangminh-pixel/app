@@ -45,10 +45,19 @@ const useScanCode = () => {
   });
 
   const codeScanner = useCodeScanner({
-    codeTypes: ['qr'],
+    codeTypes: ['qr', 'ean-13'],
     onCodeScanned: codes => {
       if (codes.length > 0) {
-        console.log('QR value:', codes[0].value);
+        const value = codes[0]?.value;
+        try {
+          const dataScan = JSON.parse(value ?? '');
+          console.log('datascan', dataScan);
+          
+          onScanSuccess?.(dataScan);
+          navigation.goBack();
+        } catch (err) {
+          console.log('Invalid QR content:', err);
+        }
       }
     },
   });
@@ -62,7 +71,7 @@ const useScanCode = () => {
           includeBase64: true,
           maxWidth: 800,
           maxHeight: 800,
-          quality: 0.8,
+          quality: 0.4,
         },
         ({ didCancel, assets, errorCode }) => {
           try {
@@ -150,49 +159,47 @@ const useScanCode = () => {
     device,
     hasPermission,
     scanTranslate,
+    codeScanner
   };
 };
 
 export default useScanCode;
 
-
-
 export interface RootScanQR {
-  asset_id: AssetId
-  mro_location_id: MroLocationId
-  asset_category_level1_id: AssetCategoryLevel1Id
-  zone_id: ZoneId
-  request_department_id: RequestDepartmentId
-  receive_department_id: ReceiveDepartmentId
+  asset_id: AssetId;
+  mro_location_id: MroLocationId;
+  asset_category_level1_id: AssetCategoryLevel1Id;
+  zone_id: ZoneId;
+  request_department_id: RequestDepartmentId;
+  receive_department_id: ReceiveDepartmentId;
 }
 
 export interface AssetId {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface MroLocationId {
-  id: boolean
-  name: string
+  id: boolean;
+  name: string;
 }
 
 export interface AssetCategoryLevel1Id {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface ZoneId {
-  id: boolean
-  name: string
+  id: boolean;
+  name: string;
 }
 
 export interface RequestDepartmentId {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface ReceiveDepartmentId {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
-

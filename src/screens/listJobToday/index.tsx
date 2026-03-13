@@ -51,6 +51,7 @@ const ListJobTodayScreen = () => {
     setDeviceModalSelect,
     dataMaintanenceFilter,
     showSkeleton,
+    isAdmin,
   } = useListJobToday();
 
   return (
@@ -89,7 +90,11 @@ const ListJobTodayScreen = () => {
                 });
               }}
             >
-              <JobCard item={item} onPressAssignWork={handleAssignWork} />
+              <JobCard
+                item={item}
+                onPressAssignWork={handleAssignWork}
+                isAdmin={isAdmin}
+              />
             </Pressable>
           )}
           contentContainerStyle={{ padding: 16 }}

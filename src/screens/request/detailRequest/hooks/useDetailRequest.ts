@@ -1,9 +1,7 @@
 import { useAppNavigation, useAppRoute } from '@/navigation/NavigationService';
 import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
-import {
-  createMroRequest
-} from '@/services/request';
+import { createMroRequest } from '@/services/request';
 import { getDetailRequest } from '@/services/works';
 import { showErrorToast, showSuccesToast } from '@/utils/toast';
 import { useEffect, useState } from 'react';
@@ -97,6 +95,17 @@ const useDetailRequest = () => {
   const handleShowRejectModal = () => setShowRejectModal(true);
 
   const handleHideRejectModal = () => setShowRejectModal(false);
+
+  const handleNavigateDetailMedia = ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => {
+    navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
+  };
+
   return {
     detailRequestData,
     role,
@@ -104,7 +113,8 @@ const useDetailRequest = () => {
     showRejectModal,
     handleShowRejectModal,
     handleHideRejectModal,
-    showSkeleton
+    showSkeleton,
+    handleNavigateDetailMedia
   };
 };
 

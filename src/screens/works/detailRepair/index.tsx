@@ -109,6 +109,7 @@ export default function DetailRepairScreen() {
             setVisibleAssignWorkModal(true);
           }}
           onGetJob={handleGetJob}
+          isMaintenance={isMaintenance}
         />
 
         <SizeBox height={22} />
@@ -413,7 +414,7 @@ export default function DetailRepairScreen() {
               onPress={handleShowRejectModal}
             >
               <Icon name="cancel" size={22} color="white" />
-              <AppText style={styles.submitText}>Huỷ</AppText>
+              <AppText style={styles.submitText}>Từ chối</AppText>
             </Pressable>
           </View>
           <View style={[styles.footer, { flex: 1 }]}>

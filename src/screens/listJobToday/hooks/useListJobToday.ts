@@ -10,7 +10,7 @@ import {
   getListJob,
 } from '@/services/workRepair';
 import { getListDevices } from '@/services/works';
-import { ITEM_PER_PAGE } from '@/utils/appConstant';
+import { ADMIN, ITEM_PER_PAGE } from '@/utils/appConstant';
 import { useEffect, useState } from 'react';
 
 const useListJobToday = () => {
@@ -20,6 +20,10 @@ const useListJobToday = () => {
   const { state } = route.params;
 
   const user = useAppSelector(state => state.auth.user);
+  const role = useAppSelector(state => state.auth.user?.role);
+
+  const isAdmin = role === ADMIN;
+
   const [search, setSearch] = useState('');
   const [dataMaintanence, setDataMaintanence] = useState<Detail[]>([]);
   const [dataMaintanenceFilter, setDataMaintanenceFilter] = useState<Detail[]>(
@@ -247,6 +251,7 @@ const useListJobToday = () => {
     setDeviceModalSelect,
     dataMaintanenceFilter,
     showSkeleton,
+    isAdmin
   };
 };
 

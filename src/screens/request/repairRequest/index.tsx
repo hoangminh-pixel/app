@@ -123,7 +123,9 @@ const RequestCard = ({ item }: { item: RootRequest }) => {
 
       <View style={styles.cardContent}>
         <View style={styles.rowBetween}>
-          <Text style={styles.title}>{item?.asset_name?.asset_name}</Text>
+          <Text style={[styles.title, { flex: 1, marginRight: 10 }]}>
+            {item?.asset_name?.asset_name}
+          </Text>
           <Text style={styles.code}>{item?.name?.name}</Text>
         </View>
 

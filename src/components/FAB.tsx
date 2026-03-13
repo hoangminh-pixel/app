@@ -102,6 +102,7 @@ export default function FabMenu({
       <View style={styles.container}>
         {/* action 2 */}
         <Pressable
+          hitSlop={100}
           onPress={() => {
             onNavigateCreateIssue?.();
             toggleMenu();
@@ -130,6 +131,7 @@ export default function FabMenu({
 
         {/* action 1 */}
         <Pressable
+          hitSlop={100}
           onPress={() => {
             onNavigateCreateRepair?.();
             toggleMenu();

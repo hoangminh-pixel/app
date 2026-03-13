@@ -278,6 +278,16 @@ const useCreateReportProblem = () => {
     });
   };
 
+  const handleNavigateDetailMedia = ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => {
+    navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
+  };
+
   return {
     requestEmployee,
     listReceiveDepartment,
@@ -307,6 +317,7 @@ const useCreateReportProblem = () => {
     keyboardShouldPersistTaps,
     openLibrary,
     handleNavigateScanScreen,
+    handleNavigateDetailMedia
   };
 };
 

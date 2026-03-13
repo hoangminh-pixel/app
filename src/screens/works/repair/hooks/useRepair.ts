@@ -11,7 +11,7 @@ import {
   ResponseWorkRepair,
   RootDetailJob,
 } from '@/services/workRepair';
-import { ITEM_PER_PAGE, USER } from '@/utils/appConstant';
+import { ADMIN, ITEM_PER_PAGE, USER } from '@/utils/appConstant';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { findNodeHandle, UIManager, View } from 'react-native';
@@ -21,6 +21,7 @@ const useRepair = () => {
   const navigation = useAppNavigation();
   const user = useAppSelector(state => state.auth.user);
   const role = useAppSelector(state => state.auth.user?.role);
+  const isAdmin = role === ADMIN;
 
   const [search, setSearch] = useState('');
   const [selectedButton, setSelectedButton] = useState('today');
@@ -293,6 +294,7 @@ const useRepair = () => {
     navigation,
     handleReloadWhenBack,
     showSkeleton,
+    isAdmin
   };
 };
 

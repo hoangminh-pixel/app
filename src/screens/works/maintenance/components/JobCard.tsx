@@ -1,6 +1,6 @@
 import { PRIMARY } from '@/utils/color';
 import Icon from '@react-native-vector-icons/material-icons';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
 import { Detail } from '@/services/workRepair';
@@ -11,15 +11,18 @@ import SizeBox from '@/components/SizeBox';
 type Props = {
   item: Detail;
   onPressAssignWork: (id: any) => void;
+  isAdmin: boolean;
 };
 
 export const JobCard = (props: Props) => {
-  const { item, onPressAssignWork } = props;
+  const { item, onPressAssignWork, isAdmin } = props;
   const imageAvailabel =
     item?.list_image_request?.list_image_request?.length > 0 &&
     !item?.list_image_request?.list_image_request[0]?.name_image.includes(
       'mp4',
     );
+
+  const staff = item?.assign_employee_ids?.assign_employee_ids;
 
   return (
     <View style={styles.card}>
@@ -36,9 +39,9 @@ export const JobCard = (props: Props) => {
       </View>
 
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.asset_name.asset_name}</Text>
-        <SizeBox height={2} />
         <Text style={styles.code}>{item.name.name}</Text>
+        <SizeBox height={2} />
+        <Text style={styles.title}>{item.asset_name.asset_name}</Text>
 
         <View style={styles.infoRow}>
           {item?.maintenance_type?.name && (
@@ -51,12 +54,13 @@ export const JobCard = (props: Props) => {
           )}
 
           <Info
-            label="NGÀY THỰC HIỆN"
+            label="NGÀY GIAO VIỆC"
             value={moment(item?.execution_date?.execution_date).format(
               'DD/MM/YYYY',
             )}
           />
         </View>
+
         <SizeBox height={10} />
         <View style={styles.infoRow}>
           <Info
@@ -68,8 +72,17 @@ export const JobCard = (props: Props) => {
           />
           <Info label="VỊ TRÍ" value={item.mro_location_id.name} />
         </View>
+
+        {staff && staff.length > 0 && (
+          <Fragment>
+            <SizeBox height={10} />
+            <InfoStaff label="NHÂN VIÊN" value={staff} />
+            <SizeBox height={10} />
+          </Fragment>
+        )}
+
         {/* TODO: ADMIN */}
-        {item?.state?.state === 'tp_gv' && (
+        {item?.state?.state === 'tp_gv' && isAdmin && (
           <TouchableOpacity
             style={styles.assignBtn}
             onPress={() => {
@@ -88,5 +101,18 @@ const Info = ({ label, value, color }: any) => (
   <View style={{ flex: 1 }}>
     <Text style={styles.labelSmall}>{label}</Text>
     <Text style={{ fontSize: 12, fontWeight: '600', color }}>{value}</Text>
+  </View>
+);
+
+const InfoStaff = ({ label, value, color }: any) => (
+  <View style={{ flex: 1 }}>
+    <Text style={styles.labelSmall}>{label}</Text>
+    {value?.map((item: any) => {
+      return (
+        <Text key={item.id} style={{ fontSize: 12, fontWeight: '600', color }}>
+          {item.name}
+        </Text>
+      );
+    })}
   </View>
 );

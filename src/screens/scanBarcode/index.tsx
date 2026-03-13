@@ -10,25 +10,43 @@ import {
 } from 'react-native';
 
 import useScanCode from './hooks/useScanCode';
+import { Camera } from 'react-native-vision-camera';
+import SizeBox from '@/components/SizeBox';
 
 const SCAN_SIZE = 260;
 
 const QRScannerScreen = () => {
-  const { readQRFromGallery, device, hasPermission, scanTranslate } =
-    useScanCode();
+  const {
+    readQRFromGallery,
+    device,
+    hasPermission,
+    scanTranslate,
+    codeScanner,
+  } = useScanCode();
 
-  // if (!device || !hasPermission) return null;
+  if (!device || !hasPermission)
+    return (
+      <BasePage
+        title="Quét QR"
+        showBack
+        edges={['bottom']}
+        paddingHorizontal={0}
+      >
+        <SizeBox height={30} />
+        <Text style={{ textAlign: 'center' }}>Camera không khả dụng</Text>
+      </BasePage>
+    );
 
   return (
     <BasePage title="Quét QR" showBack edges={['bottom']} paddingHorizontal={0}>
       <View style={styles.container}>
         {/* Camera */}
-        {/* <Camera
-        style={StyleSheet.absoluteFill}
-        device={device}
-        isActive={true}
-        codeScanner={codeScanner}
-      /> */}
+        <Camera
+          style={StyleSheet.absoluteFill}
+          device={device}
+          isActive={true}
+          codeScanner={codeScanner}
+        />
 
         {/* Overlay */}
         <View style={styles.overlay}>
@@ -41,14 +59,14 @@ const QRScannerScreen = () => {
             <View style={[styles.corner, styles.br]} />
 
             {/* Scan Line */}
-            <Animated.View
+            {/* <Animated.View
               style={[
                 styles.scanLine,
                 {
                   transform: [{ translateY: scanTranslate }],
                 },
               ]}
-            />
+            /> */}
           </View>
         </View>
 

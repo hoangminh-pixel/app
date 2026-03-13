@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { ChecklistItem } from '../components/Checklist';
 import { showErrorToast, showSuccesToast } from '@/utils/toast';
 import useAppCamera, { MediaTypeRes } from '@/hooks/useAppCamera';
+import { useAppNavigation } from '@/navigation/NavigationService';
 
 type Props = {
   item: ChecklistItem;
@@ -14,6 +15,7 @@ type Props = {
 export const useItemChecklist = ({ item, checklistType }: Props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.auth.user);
+  const navigation = useAppNavigation();
 
   const [pass, setPass] = useState(false);
   const [fail, setFail] = useState(false);
@@ -22,7 +24,8 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
   const [checklistDesc, setChecklistDesc] = useState(item.note.note);
   const [measure, setMeasure] = useState(item.measure.measure);
 
-  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } =
+    useAppCamera();
 
   const serverMedia: MediaTypeRes[] =
     item?.list_image_url?.list_image_url?.map(img => {
@@ -180,6 +183,16 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
     }
   };
 
+  const handleNavigateDetailMedia = ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => {
+    navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
+  };
+
   return {
     pass,
     fail,
@@ -196,6 +209,7 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
     removeMedia,
     handleOpenPhoto,
     displayMedia,
-    openLibrary
+    openLibrary,
+    handleNavigateDetailMedia,
   };
 };

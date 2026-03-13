@@ -21,4 +21,5 @@ export type MainStackParamList = {
   QRScannerScreen: {
     onScanSuccess?: (data: any) => void;
   };
+  DetailMediaScreen: { url: string; mediaType: string };
 };

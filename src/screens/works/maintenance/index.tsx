@@ -52,6 +52,7 @@ export default function MaintanenceScreen() {
     navigation,
     handleReloadWhenBack,
     showSkeleton,
+    isAdmin,
   } = useMaintenance();
 
   return (
@@ -103,7 +104,11 @@ export default function MaintanenceScreen() {
                 });
               }}
             >
-              <JobCard item={item} onPressAssignWork={handleAssignWork} />
+              <JobCard
+                item={item}
+                onPressAssignWork={handleAssignWork}
+                isAdmin={isAdmin}
+              />
             </Pressable>
           )}
           contentContainerStyle={{ padding: 16 }}
