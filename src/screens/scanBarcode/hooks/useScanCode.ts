@@ -27,8 +27,10 @@ const useScanCode = () => {
   const device = useCameraDevice('back');
   const { hasPermission, requestPermission } = useCameraPermission();
   const scanAnim = useRef(new Animated.Value(0)).current;
+  const scannedRef = useRef(false);
 
   useEffect(() => {
+    scannedRef.current = false;
     requestPermission();
     //     Animated.loop(
     //       Animated.timing(scanAnim, {
@@ -47,12 +49,14 @@ const useScanCode = () => {
   const codeScanner = useCodeScanner({
     codeTypes: ['qr', 'ean-13'],
     onCodeScanned: codes => {
+      if (scannedRef.current) return;
       if (codes.length > 0) {
         const value = codes[0]?.value;
         try {
           const dataScan = JSON.parse(value ?? '');
+          scannedRef.current = true;
           console.log('datascan', dataScan);
-          
+
           onScanSuccess?.(dataScan);
           navigation.goBack();
         } catch (err) {
@@ -159,7 +163,7 @@ const useScanCode = () => {
     device,
     hasPermission,
     scanTranslate,
-    codeScanner
+    codeScanner,
   };
 };
 

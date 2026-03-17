@@ -52,11 +52,12 @@ const ListJobTodayScreen = () => {
     dataMaintanenceFilter,
     showSkeleton,
     isAdmin,
+    titleScreen
   } = useListJobToday();
 
   return (
     <BasePage
-      title="Công việc trong ngày"
+      title={titleScreen}
       edges={['bottom']}
       paddingHorizontal={0}
       showBack

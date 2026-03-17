@@ -1,3 +1,10 @@
+import { BasePage } from '@/components';
+import { setCurrentModule } from '@/redux/slices/appSlice';
+import { useAppDispatch } from '@/redux/store/hooks';
+import { PRIMARY } from '@/utils/color';
+import { setCurrentModuleStorage } from '@/utils/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -6,34 +13,34 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import useSelectFunction from './hooks/useSelectFunction';
 
 const SelectFunctionScreen = () => {
+  const { selectModule, handleSignInAsm } = useSelectFunction();
+
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
-        </TouchableOpacity>
+    <BasePage title="Chọn chức năng" paddingHorizontal={0}>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <FunctionCard
+            icon="🛠"
+            title="Bảo trì"
+            description="Quản lý và thực hiện các công việc bảo trì định kỳ cho hệ thống của bạn."
+            onPress={() => selectModule('maintenance')}
+          />
 
-        <Text style={styles.headerTitle}>Chọn chức năng</Text>
+          <FunctionCard
+            icon="📦"
+            title="Tài sản"
+            description="Theo dõi và quản lý danh mục tài sản, trang thiết bị của doanh nghiệp."
+            onPress={async () => {
+              await handleSignInAsm();
+              await selectModule('asset');
+            }}
+          />
+        </ScrollView>
       </View>
-
-      {/* Content */}
-      <ScrollView contentContainerStyle={styles.content}>
-        <FunctionCard
-          icon="🛠"
-          title="Bảo trì"
-          description="Quản lý và thực hiện các công việc bảo trì định kỳ cho hệ thống của bạn."
-        />
-
-        <FunctionCard
-          icon="📦"
-          title="Tài sản"
-          description="Theo dõi và quản lý danh mục tài sản, trang thiết bị của doanh nghiệp."
-        />
-      </ScrollView>
-    </View>
+    </BasePage>
   );
 };
 
@@ -41,10 +48,12 @@ const FunctionCard = ({
   icon,
   title,
   description,
+  onPress,
 }: {
   icon: string;
   title: string;
   description: string;
+  onPress: () => void;
 }) => {
   return (
     <View style={styles.card}>
@@ -60,7 +69,7 @@ const FunctionCard = ({
       <Text style={styles.cardDesc}>{description}</Text>
 
       {/* Button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.buttonText}>Truy cập →</Text>
       </TouchableOpacity>
     </View>
@@ -72,35 +81,7 @@ export default SelectFunctionScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#101322',
-  },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(19,55,236,0.1)',
-  },
-
-  backBtn: {
-    padding: 8,
-    marginRight: 8,
-  },
-
-  backIcon: {
-    color: '#1337ec',
-    fontSize: 20,
-  },
-
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#fff',
-    marginRight: 32,
+    backgroundColor: '#f6f8ff', // nền sáng
   },
 
   content: {
@@ -110,45 +91,56 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: '#1a1d2e',
-    borderRadius: 12,
-    padding: 20,
+    backgroundColor: '#ffffff', // card trắng
+    borderRadius: 14,
+    padding: 22,
+
     borderWidth: 1,
-    borderColor: 'rgba(19,55,236,0.1)',
+    borderColor: 'rgba(19,55,236,0.08)',
+
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
   },
 
   iconBox: {
     width: 56,
     height: 56,
-    borderRadius: 12,
-    backgroundColor: 'rgba(19,55,236,0.1)',
+    borderRadius: 14,
+
+    backgroundColor: 'rgba(19,55,236,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(19,55,236,0.25)',
+
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
   },
 
   icon: {
-    fontSize: 26,
+    fontSize: 28,
   },
 
   cardTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#fff',
+    color: '#111827',
     marginBottom: 6,
   },
 
   cardDesc: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: '#6b7280',
     lineHeight: 18,
     marginBottom: 16,
   },
 
   button: {
-    backgroundColor: '#1337ec',
+    backgroundColor: PRIMARY,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: 'center',
   },
 

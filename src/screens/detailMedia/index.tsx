@@ -7,6 +7,8 @@ import Video from 'react-native-video';
 const DetailMediaScreen = () => {
   const route = useAppRoute<'DetailMediaScreen'>();
   const { url, mediaType } = route.params;
+  console.log('url', url);
+
   return (
     <BasePage
       title="Xem chi tiết"

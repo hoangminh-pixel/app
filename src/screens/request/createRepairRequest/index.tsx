@@ -81,6 +81,7 @@ export default function CreateRepairRequestScreen() {
     handleNavigateScanScreen,
     setIsCreateRequest,
     handleNavigateDetailMedia,
+    disableDropdownWhenUserViewDetail,
   } = useCreateRepairRequest();
 
   if (showSkeleton)
@@ -119,6 +120,7 @@ export default function CreateRepairRequestScreen() {
         <Section title="Thông tin chung" icon="info" />
         {titleReport && (
           <SectionInput
+            disable={disableDropdownWhenUserViewDetail}
             label={`Tiêu đề *`}
             value={titleReport}
             onChangeText={setTitleReport}
@@ -127,6 +129,7 @@ export default function CreateRepairRequestScreen() {
           />
         )}
         <Dropdown
+          disable={disableDropdownWhenUserViewDetail}
           label="Thiết bị"
           value={asset?.value}
           options={listAsset}
@@ -138,7 +141,7 @@ export default function CreateRepairRequestScreen() {
         <SizeBox height={10} />
 
         <Dropdown
-          disable={deviceGroup?.id}
+          disable={deviceGroup?.id || disableDropdownWhenUserViewDetail}
           label="Nhóm thiết bị"
           value={deviceGroup?.value}
           options={listDeviceGroup}
@@ -147,7 +150,7 @@ export default function CreateRepairRequestScreen() {
         <SizeBox height={10} />
 
         <Dropdown
-          disable={zone?.id}
+          disable={zone?.id || disableDropdownWhenUserViewDetail}
           label="Khu vực"
           value={zone?.value}
           options={listZone}
@@ -156,7 +159,7 @@ export default function CreateRepairRequestScreen() {
         <SizeBox height={10} />
 
         <Dropdown
-          disable={location?.id}
+          disable={location?.id || disableDropdownWhenUserViewDetail}
           label="Vị trí"
           value={location?.value}
           options={listLocation}
@@ -169,6 +172,7 @@ export default function CreateRepairRequestScreen() {
           value={receiveDepartment?.value}
           options={listReceiveDepartment}
           onChange={setReceiveDepartment}
+          disable={disableDropdownWhenUserViewDetail}
         />
         <SizeBox height={10} />
 
@@ -179,6 +183,7 @@ export default function CreateRepairRequestScreen() {
           onChange={item => {
             handleChangeService(item?.id);
           }}
+          disable={disableDropdownWhenUserViewDetail}
         />
         <SizeBox height={10} />
 
@@ -187,6 +192,7 @@ export default function CreateRepairRequestScreen() {
           value={maintenanceGroup?.value}
           options={listReceiveDepartment}
           onChange={setMaintenanceGroup}
+          disable={disableDropdownWhenUserViewDetail}
         />
         <SizeBox height={10} />
 
@@ -195,6 +201,7 @@ export default function CreateRepairRequestScreen() {
           value={priority?.value}
           options={priorityLevels}
           onChange={setPriority}
+          disable={disableDropdownWhenUserViewDetail}
         />
 
         <SizeBox height={16} />
@@ -256,12 +263,15 @@ export default function CreateRepairRequestScreen() {
               <View key={index} style={styles.imageWrapper}>
                 <Pressable
                   onPress={() => {
-                    handleNavigateDetailMedia({ url: item.url, type: 'photo' });
+                    handleNavigateDetailMedia({
+                      url: item.image_url || item.value,
+                      type: 'photo',
+                    });
                   }}
                 >
                   <Image
                     source={{
-                      uri: item.url,
+                      uri: item.image_url || item.value,
                     }}
                     style={styles.imageChecklist}
                   />
@@ -271,12 +281,15 @@ export default function CreateRepairRequestScreen() {
               <View key={index} style={styles.imageWrapper}>
                 <Pressable
                   onPress={() => {
-                    handleNavigateDetailMedia({ url: item.url, type: 'video' });
+                    handleNavigateDetailMedia({
+                      url: item.image_url || item.value,
+                      type: 'video',
+                    });
                   }}
                 >
                   <Video
                     style={[styles.imageChecklist, { overflow: 'hidden' }]}
-                    source={{ uri: item.url }}
+                    source={{ uri: item.image_url || item.value }}
                     muted
                     repeat
                     resizeMode="cover"
@@ -362,6 +375,7 @@ export default function CreateRepairRequestScreen() {
         <SizeBox height={16} />
 
         <SectionInput
+          disable={disableDropdownWhenUserViewDetail}
           label="Mô tả"
           multiline
           value={description}
@@ -370,8 +384,8 @@ export default function CreateRepairRequestScreen() {
           onBlur={onBlurInput}
         />
       </BasePage>
-      <View style={styles.footer}>
-        {state === 'waiting' && role !== USER ? (
+      {state === 'waiting' && role !== USER && (
+        <View style={styles.footer}>
           <View style={{ flexDirection: 'row' }}>
             <View style={[styles.footer, { flex: 1, padding: 0 }]}>
               <Pressable
@@ -395,13 +409,16 @@ export default function CreateRepairRequestScreen() {
               </Pressable>
             </View>
           </View>
-        ) : (
+        </View>
+      )}
+      {!state && (
+        <View style={styles.footer}>
           <Pressable style={styles.submitBtn} onPress={handleCreateMroRequest}>
             <Icon name="send" size={18} color="white" />
             <AppText style={styles.submitText}>Gửi yêu cầu</AppText>
           </Pressable>
-        )}
-      </View>
+        </View>
+      )}
       <Modal transparent visible={visibleModalDate}>
         <Pressable
           style={styles.overlay}

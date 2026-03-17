@@ -1,5 +1,5 @@
 import { useAppNavigation } from '@/navigation/NavigationService';
-import { hideLoading, showLoading } from '@/redux/slices/loadingSlice';
+import { login } from '@/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { countTotalWork } from '@/services/home';
 import { showErrorToast } from '@/utils/toast';
@@ -12,7 +12,7 @@ const useHome = () => {
   const dispatch = useAppDispatch();
 
   const [homeData, setHomeData] = useState<RootHome>();
-  const [showSkeleton, setShowSkeleton] = useState<boolean>(true);
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
   useEffect(() => {
     handleGetDataHome();
@@ -27,6 +27,20 @@ const useHome = () => {
       });
       if (res && res.code === 1) {
         setHomeData(res.data);
+        const id = res.data?.employee_data?.id;
+        if (user) {
+          if (!user?.id) {
+            const userData = {
+              ...user,
+              id: id,
+            };
+            dispatch(
+              login({
+                user: userData,
+              }),
+            );
+          }
+        }
       }
     } catch (error) {
       console.log('error handleGetDataHome', error);
@@ -80,7 +94,7 @@ const useHome = () => {
     showSkeleton,
     handleGetDataHome,
     handleNavigate,
-    handleNavigateSetting
+    handleNavigateSetting,
   };
 };
 

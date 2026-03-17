@@ -135,7 +135,7 @@ interface CreateMroRequestPayload {
   note_employee_request: string;
   receive_department_id: any;
   request_department_id: any;
-  priority_id: any;
+  priority_id?: any;
   g_map_location?: string;
   report_cause_id?: any;
   action?: string;

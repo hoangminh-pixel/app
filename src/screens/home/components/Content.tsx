@@ -88,7 +88,7 @@ export const Content = ({ data, summary, handleNavigate }: Props) => {
               <TaskItem
                 icon="work"
                 title={task.cause_id}
-                code={task.name}
+                // code={task.name}
                 state={task.state}
                 status={getSateItem({ state: task.state })}
               />
@@ -108,8 +108,8 @@ export const Content = ({ data, summary, handleNavigate }: Props) => {
             <TaskItem
               key={task.id}
               icon="work"
-              title={task.name}
-              code={task.activity_code}
+              // title={task.name}
+              title={task.activity_code}
               state={task.state}
               status={getSateItem({ state: task.state })}
             />

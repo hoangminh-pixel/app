@@ -23,3 +23,10 @@ export type MainStackParamList = {
   };
   DetailMediaScreen: { url: string; mediaType: string };
 };
+
+export type AssetStackParamList = {
+  Home: undefined;
+  BottomTab: undefined;
+  AssetDetailScreen: { id: number };
+  MarkBrokenScreen: { id: number };
+};

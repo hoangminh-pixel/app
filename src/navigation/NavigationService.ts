@@ -1,5 +1,9 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MainStackParamList, AuthStackParamList } from './types';
+import {
+  MainStackParamList,
+  AuthStackParamList,
+  AssetStackParamList,
+} from './types';
 import {
   CompositeNavigationProp,
   RouteProp,
@@ -9,8 +13,16 @@ import {
 
 type AppNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<MainStackParamList>,
-  NativeStackNavigationProp<AuthStackParamList>
+  CompositeNavigationProp<
+    NativeStackNavigationProp<AuthStackParamList>,
+    NativeStackNavigationProp<AssetStackParamList>
+  >
 >;
+
+type AppRouteParamList = MainStackParamList &
+  AuthStackParamList &
+  AssetStackParamList;
+
 export const useAppNavigation = () => useNavigation<AppNavigationProp>();
-export const useAppRoute = <T extends keyof MainStackParamList>() =>
-  useRoute<RouteProp<MainStackParamList, T>>();
+export const useAppRoute = <T extends keyof AppRouteParamList>() =>
+  useRoute<RouteProp<AppRouteParamList, T>>();

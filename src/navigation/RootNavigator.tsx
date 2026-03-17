@@ -7,8 +7,14 @@ import BottomTabNavigator from './BottomTabNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from '@/screens/splash';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
-import { login } from '@/redux/slices/authSlice';
-import { getUserInfo } from '@/utils/storage';
+import { login, loginAsm } from '@/redux/slices/authSlice';
+import {
+  getCurrentModuleStorage,
+  getUserInfo,
+  getUserInfoASM,
+} from '@/utils/storage';
+import { setCurrentModule } from '@/redux/slices/appSlice';
+import AppStack from './AppStack';
 
 export default function RootNavigator() {
   const [loading, setLoading] = useState(true);
@@ -18,10 +24,17 @@ export default function RootNavigator() {
   const handleCheckUser = async () => {
     try {
       const user = await getUserInfo();
+      const userInforAsm = await getUserInfoASM();
+      const module = await getCurrentModuleStorage();
 
       if (user) {
-        setLoading(false);
         dispatch(login({ user }));
+      }
+      if (userInforAsm) {
+        dispatch(loginAsm({ user: userInforAsm }));
+      }
+      if (module) {
+        dispatch(setCurrentModule(module));
       }
     } catch (error) {
       console.log('error : ', error);
@@ -31,9 +44,10 @@ export default function RootNavigator() {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      handleCheckUser();
-    }, 1500);
+    // setTimeout(() => {
+    //   handleCheckUser();
+    // }, 1500);
+    handleCheckUser();
   }, []);
 
   if (loading) {
@@ -42,7 +56,7 @@ export default function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {isLogin ? <MainStack /> : <AuthStack />}
+      {isLogin ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }

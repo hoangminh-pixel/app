@@ -1,4 +1,6 @@
-import { Data } from '@/services/workRepair';
+import SizeBox from '@/components/SizeBox';
+import { MediaTypeRes } from '@/hooks/useAppCamera';
+import { PRIMARY } from '@/utils/color';
 import Icon from '@react-native-vector-icons/material-icons';
 import React, { Fragment, useState } from 'react';
 import {
@@ -10,13 +12,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { styles } from '../styles';
-import SizeBox from '@/components/SizeBox';
-import { AppInput } from '@/components';
-import { PRIMARY } from '@/utils/color';
-import { useItemChecklist } from '../hooks/useItemChecklist';
-import { MediaTypeRes } from '@/hooks/useAppCamera';
 import Video from 'react-native-video';
+import { useItemChecklist } from '../hooks/useItemChecklist';
+import { styles } from '../styles';
 
 type Props = {
   type: string;
@@ -86,6 +84,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
     displayMedia,
     openLibrary,
     handleNavigateDetailMedia,
+    isRemoveMedia,
   } = useItemChecklist({ item, checklistType: type });
 
   return (
@@ -131,7 +130,10 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
         </View>
       </Pressable>
 
-      <View style={{ display: isShow ? 'flex' : 'none' }}>
+      <View
+        style={{ display: isShow ? 'flex' : 'none' }}
+        pointerEvents={!isDoneButton ? 'none' : 'auto'}
+      >
         <SizeBox height={8} />
         {/* Guide */}
         {/* <TouchableOpacity>
@@ -182,6 +184,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
             removeMedia={removeMedia}
             openLibrary={openLibrary}
             handleNavigateDetailMedia={handleNavigateDetailMedia}
+            isRemoveMedia={isRemoveMedia}
           />
         )}
         {type === 'measure' && (
@@ -338,6 +341,7 @@ function MediaSection({
   removeMedia,
   openLibrary,
   handleNavigateDetailMedia,
+  isRemoveMedia,
 }: {
   openCamera: () => void;
   openPhoto: () => void;
@@ -351,6 +355,7 @@ function MediaSection({
     url: string;
     type: string;
   }) => void;
+  isRemoveMedia: boolean;
 }) {
   return (
     <View>
@@ -386,12 +391,14 @@ function MediaSection({
                 />
               </Pressable>
 
-              <Pressable
-                style={styles.removeBtn}
-                onPress={() => removeMedia(index)}
-              >
-                <Icon name="close" size={14} color="white" />
-              </Pressable>
+              {isRemoveMedia && (
+                <Pressable
+                  style={styles.removeBtn}
+                  onPress={() => removeMedia(index)}
+                >
+                  <Icon name="close" size={14} color="white" />
+                </Pressable>
+              )}
             </View>
           ) : (
             <View key={index} style={styles.imageWrapper}>
@@ -409,12 +416,14 @@ function MediaSection({
                 />
               </Pressable>
 
-              <Pressable
-                style={styles.removeBtn}
-                onPress={() => removeMedia(index)}
-              >
-                <Icon name="close" size={14} color="white" />
-              </Pressable>
+              {isRemoveMedia && (
+                <Pressable
+                  style={styles.removeBtn}
+                  onPress={() => removeMedia(index)}
+                >
+                  <Icon name="close" size={14} color="white" />
+                </Pressable>
+              )}
             </View>
           ),
         )}

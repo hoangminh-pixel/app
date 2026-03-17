@@ -44,7 +44,8 @@ const useDetailRepair = () => {
 
   const [showRejectModal, setShowRejectModal] = useState<boolean>(false);
 
-  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } = useAppCamera();
+  const { openCamera, mediaResponse, loading, removeMedia, openLibrary } =
+    useAppCamera();
 
   useEffect(() => {
     handleGetDetailWork();
@@ -282,6 +283,16 @@ const useDetailRepair = () => {
     dataDetailJob?.data?.list_project_task_ids.list_project_task_ids &&
     dataDetailJob?.data?.list_project_task_ids.list_project_task_ids.length > 0;
 
+  const handleNavigateDetailMedia = ({
+    url,
+    type,
+  }: {
+    url: string;
+    type: string;
+  }) => {
+    navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
+  };
+
   return {
     dataDetailJob,
     skelenton,
@@ -317,7 +328,8 @@ const useDetailRepair = () => {
     handleChangeDesc,
     handleDoneJob,
     isMaintenance,
-    openLibrary
+    openLibrary,
+    handleNavigateDetailMedia
   };
 };
 

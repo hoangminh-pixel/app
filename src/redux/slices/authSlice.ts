@@ -1,16 +1,18 @@
-import { Root } from '@/services/auth/authService';
+import { Root, RootAsmSignIn } from '@/services/auth/authService';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   accessToken: string | null;
   isLogin: boolean;
   user: Root | null;
+  userAsm: RootAsmSignIn | null;
 }
 
 const initialState: AuthState = {
   accessToken: null,
   user: null,
   isLogin: false,
+  userAsm: null,
 };
 
 const authSlice = createSlice({
@@ -28,13 +30,17 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.user = null;
       state.isLogin = false;
+      state.userAsm = null;
     },
     login: (state, action: PayloadAction<{ user: Root }>) => {
       state.isLogin = true;
-      state.user = action.payload.user
+      state.user = action.payload.user;
+    },
+    loginAsm: (state, action: PayloadAction<{ user: RootAsmSignIn }>) => {
+      state.userAsm = action.payload.user;
     },
   },
 });
 
-export const { setCredentials, logout, login } = authSlice.actions;
+export const { setCredentials, logout, login ,loginAsm} = authSlice.actions;
 export default authSlice.reducer;

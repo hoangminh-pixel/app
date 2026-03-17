@@ -94,15 +94,16 @@ export default function FabMenu({
       {open && (
         <Pressable style={styles.overlay} onPress={closeMenu}>
           <Animated.View
+            pointerEvents="none"
             style={[styles.overlayBg, { opacity: overlayOpacity }]}
           />
         </Pressable>
       )}
 
-      <View style={styles.container}>
+      <View style={styles.container} pointerEvents="box-none">
         {/* action 2 */}
         <Pressable
-          hitSlop={100}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           onPress={() => {
             onNavigateCreateIssue?.();
             toggleMenu();
@@ -131,7 +132,7 @@ export default function FabMenu({
 
         {/* action 1 */}
         <Pressable
-          hitSlop={100}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           onPress={() => {
             onNavigateCreateRepair?.();
             toggleMenu();
@@ -175,6 +176,7 @@ const styles = StyleSheet.create({
     bottom: 24,
     right: 12,
     alignItems: 'center',
+    zIndex: 100,
   },
 
   fab: {

@@ -1,10 +1,16 @@
 import { BasePage } from '@/components';
 import SizeBox from '@/components/SizeBox';
+import { setCurrentModule } from '@/redux/slices/appSlice';
 import { logout } from '@/redux/slices/authSlice';
 import { useAppDispatch } from '@/redux/store/hooks';
 import { PRIMARY } from '@/utils/color';
-import { removeUserInfo } from '@/utils/storage';
+import {
+  removeCurrentModuleStorage,
+  removeUserInfo,
+  removeUserInfoASM,
+} from '@/utils/storage';
 import { showErrorToast } from '@/utils/toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from '@react-native-vector-icons/material-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -16,6 +22,9 @@ export default function SettingScreen() {
   const handleLogOut = async () => {
     try {
       await removeUserInfo();
+      await removeUserInfoASM();
+      await removeCurrentModuleStorage();
+      dispatch(setCurrentModule(null));
       dispatch(logout());
     } catch (error) {
       showErrorToast({});

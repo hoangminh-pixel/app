@@ -59,6 +59,7 @@ export default function DetailRepairScreen() {
     handleDoneJob,
     isMaintenance,
     openLibrary,
+    handleNavigateDetailMedia,
   } = useDetailRepair();
 
   if (skelenton) {
@@ -175,25 +176,43 @@ export default function DetailRepairScreen() {
                           <View key={index}>
                             {isImage ? (
                               <View style={styles.imageWrapper}>
-                                <Image
-                                  source={{
-                                    uri: item.image_url,
+                                <Pressable
+                                  onPress={() => {
+                                    handleNavigateDetailMedia({
+                                      url: item.image_url,
+                                      type: 'photo',
+                                    });
                                   }}
-                                  style={styles.imageChecklist}
-                                />
+                                >
+                                  <Image
+                                    source={{
+                                      uri: item.image_url,
+                                    }}
+                                    style={styles.imageChecklist}
+                                  />
+                                </Pressable>
                               </View>
                             ) : (
                               <View key={index} style={styles.imageWrapper}>
-                                <Video
-                                  style={[
-                                    styles.imageChecklist,
-                                    { overflow: 'hidden' },
-                                  ]}
-                                  source={{ uri: item.image_url }}
-                                  muted
-                                  repeat
-                                  resizeMode="cover"
-                                />
+                                <Pressable
+                                  onPress={() => {
+                                    handleNavigateDetailMedia({
+                                      url: item.image_url,
+                                      type: 'video',
+                                    });
+                                  }}
+                                >
+                                  <Video
+                                    style={[
+                                      styles.imageChecklist,
+                                      { overflow: 'hidden' },
+                                    ]}
+                                    source={{ uri: item.image_url }}
+                                    muted
+                                    repeat
+                                    resizeMode="cover"
+                                  />
+                                </Pressable>
                               </View>
                             )}
                           </View>
@@ -220,12 +239,22 @@ export default function DetailRepairScreen() {
                     {mediaResponse.map((item, index) =>
                       item.type === 'photo' ? (
                         <View key={index} style={styles.imageWrapper}>
-                          <Image
-                            source={{
-                              uri: item.url,
+                          <Pressable
+                            onPress={() => {
+                              handleNavigateDetailMedia({
+                                url: item.url,
+                                type: 'photo',
+                              });
                             }}
-                            style={styles.imageChecklist}
-                          />
+                          >
+                            <Image
+                              source={{
+                                uri: item.url,
+                              }}
+                              style={styles.imageChecklist}
+                            />
+                          </Pressable>
+
                           <Pressable
                             style={styles.removeBtn}
                             onPress={() => removeMedia(index)}
@@ -235,16 +264,25 @@ export default function DetailRepairScreen() {
                         </View>
                       ) : (
                         <View key={index} style={styles.imageWrapper}>
-                          <Video
-                            style={[
-                              styles.imageChecklist,
-                              { overflow: 'hidden' },
-                            ]}
-                            source={{ uri: item.url }}
-                            muted
-                            repeat
-                            resizeMode="cover"
-                          />
+                          <Pressable
+                            onPress={() => {
+                              handleNavigateDetailMedia({
+                                url: item.url,
+                                type: 'video',
+                              });
+                            }}
+                          >
+                            <Video
+                              style={[
+                                styles.imageChecklist,
+                                { overflow: 'hidden' },
+                              ]}
+                              source={{ uri: item.url }}
+                              muted
+                              repeat
+                              resizeMode="cover"
+                            />
+                          </Pressable>
                           <Pressable
                             style={styles.removeBtn}
                             onPress={() => removeMedia(index)}
@@ -280,25 +318,43 @@ export default function DetailRepairScreen() {
                           <View key={index}>
                             {isImage ? (
                               <View style={styles.imageWrapper}>
-                                <Image
-                                  source={{
-                                    uri: item.image_url,
+                                <Pressable
+                                  onPress={() => {
+                                    handleNavigateDetailMedia({
+                                      url: item.image_url,
+                                      type: 'photo',
+                                    });
                                   }}
-                                  style={styles.imageChecklist}
-                                />
+                                >
+                                  <Image
+                                    source={{
+                                      uri: item.image_url,
+                                    }}
+                                    style={styles.imageChecklist}
+                                  />
+                                </Pressable>
                               </View>
                             ) : (
                               <View key={index} style={styles.imageWrapper}>
-                                <Video
-                                  style={[
-                                    styles.imageChecklist,
-                                    { overflow: 'hidden' },
-                                  ]}
-                                  source={{ uri: item.image_url }}
-                                  muted
-                                  repeat
-                                  resizeMode="cover"
-                                />
+                                <Pressable
+                                  onPress={() => {
+                                    handleNavigateDetailMedia({
+                                      url: item.image_url,
+                                      type: 'video',
+                                    });
+                                  }}
+                                >
+                                  <Video
+                                    style={[
+                                      styles.imageChecklist,
+                                      { overflow: 'hidden' },
+                                    ]}
+                                    source={{ uri: item.image_url }}
+                                    muted
+                                    repeat
+                                    resizeMode="cover"
+                                  />
+                                </Pressable>
                               </View>
                             )}
                           </View>

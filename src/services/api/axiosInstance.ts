@@ -10,7 +10,7 @@ export const ASM_PREFIX = '/api/v1/erpviet_asm';
 
 export const axiosInstance = axios.create({
   baseURL: API_URL,
-  timeout: 50000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },

@@ -22,10 +22,12 @@ export const SectionInput = ({
   onChangeText,
   onFocus,
   onBlur,
+  disable
 }: any) => (
   <View style={{ flex: 1 }}>
     <AppText style={styles.label}>{label}</AppText>
     <TextInput
+      editable={!disable}
       value={value}
       onChangeText={onChangeText}
       style={[

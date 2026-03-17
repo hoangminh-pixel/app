@@ -33,3 +33,10 @@ export const createFormData = ({ files, body }: any) => {
 
   return data;
 };
+
+export const formatVND = (value: number) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
+};

@@ -290,7 +290,7 @@ export default function DetailRequestScreen() {
         )}
         <SizeBox height={30} />
       </BasePage>
-      {detailRequestData?.state?.state === 'claim' && role !== USER && (
+      {detailRequestData?.state?.state === 'claim' && role === ADMIN && (
         <View style={styles.footer}>
           <View style={{ flexDirection: 'row' }}>
             <View style={[styles.footer, { flex: 1, padding: 0 }]}>

@@ -22,7 +22,21 @@ export const JobCard = (props: Props) => {
       'mp4',
     );
 
-  const staff = item?.assign_employee_ids?.assign_employee_ids;
+  const assignList = item?.assign_employee_ids?.assign_employee_ids ?? [];
+  const execute = item?.execute_employee_id;
+
+  let staff = [...assignList];
+
+  if (execute?.id) {
+    const isExist = assignList.some(emp => emp.id === execute.id);
+
+    if (!isExist) {
+      staff.push({
+        id: execute.id,
+        name: execute.name,
+      });
+    }
+  }
 
   return (
     <View style={styles.card}>

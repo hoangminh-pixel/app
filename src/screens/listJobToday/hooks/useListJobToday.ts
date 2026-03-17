@@ -222,6 +222,9 @@ const useListJobToday = () => {
     setTechnicians(null);
     setCheckEmployeeWorkToo([]);
   };
+
+    const titleScreen = state === 'over_day' ? 'Công việc trễ hạn' : 'Công việc trong ngày'
+  
   return {
     search,
     setSearch,
@@ -251,7 +254,8 @@ const useListJobToday = () => {
     setDeviceModalSelect,
     dataMaintanenceFilter,
     showSkeleton,
-    isAdmin
+    isAdmin,
+    titleScreen
   };
 };
 

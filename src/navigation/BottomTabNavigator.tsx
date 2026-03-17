@@ -31,29 +31,6 @@ const BottomTabNavigator = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: true,
         tabBarActiveTintColor: '#005a3c',
-        // tabBarLabel: ({ focused }) => {
-        //   const color = focused ? '#005a3c' : '#999';
-
-        //   switch (route.name) {
-        //     case 'Home':
-        //       return <Text>Trang chủ</Text>;
-
-        //     case 'Profile':
-        //       return <Text>Trang chủ</Text>;
-
-        //     case 'Calendar':
-        //       return <Text>Trang chủ</Text>;
-
-        //     case 'Report':
-        //       return <Text>Trang chủ</Text>;
-
-        //     case 'Task':
-        //       return <Text>Trang chủ</Text>;
-
-        //     default:
-        //       return null;
-        //   }
-        // },
         tabBarIcon: ({ focused }) => {
           const color = focused ? '#005a3c' : '#999';
 

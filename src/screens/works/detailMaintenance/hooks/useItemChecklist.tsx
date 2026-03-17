@@ -40,6 +40,9 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
 
   const displayMedia = mediaResponse.length > 0 ? mediaResponse : serverMedia;
 
+  const isRemoveMedia = mediaResponse.length > 0;
+
+
   useEffect(() => {
     if (item.mro_check.mro_check.key === 'normal') {
       setItemSuccess(null);
@@ -211,5 +214,6 @@ export const useItemChecklist = ({ item, checklistType }: Props) => {
     displayMedia,
     openLibrary,
     handleNavigateDetailMedia,
+    isRemoveMedia
   };
 };

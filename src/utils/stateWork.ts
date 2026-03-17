@@ -42,7 +42,7 @@ export const getSateItem = ({ state }: { state: string }) => {
   } else if (state === 'run') {
     state = 'Đang thực hiện';
   } else if (state === 'cancel_order') {
-    state = 'Huỷ';
+    state = 'Từ chối';
   }
   return state;
 };

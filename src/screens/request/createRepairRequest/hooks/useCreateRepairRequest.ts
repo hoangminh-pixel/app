@@ -20,6 +20,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { DetailRequestResponse } from '../../types';
 import { RootScanQR } from '@/screens/scanBarcode/hooks/useScanCode';
+import { USER } from '@/utils/appConstant';
 
 const useCreateRepairRequest = () => {
   const user = useAppSelector(state => state.auth.user);
@@ -583,6 +584,17 @@ const useCreateRepairRequest = () => {
   }) => {
     navigation.navigate('DetailMediaScreen', { url: url, mediaType: type });
   };
+
+  const disableDropdownWhenUserViewDetail =
+    state !== undefined && role === USER;
+
+  console.log(
+    'disableDropdownWhenUserViewDetail',
+    disableDropdownWhenUserViewDetail,
+    state,
+    role
+  );
+
   return {
     requestEmployee,
     listDeviceGroup,
@@ -638,6 +650,7 @@ const useCreateRepairRequest = () => {
     handleNavigateScanScreen,
     setIsCreateRequest,
     handleNavigateDetailMedia,
+    disableDropdownWhenUserViewDetail,
   };
 };
 

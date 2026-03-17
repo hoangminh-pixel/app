@@ -11,6 +11,8 @@ import moment from 'moment';
 // import useMaintenance from '../hooks/useMaintenance';
 import { DropdownMulti } from '@/components/DropDownMulti';
 import { showErrorToast } from '@/utils/toast';
+import { useAppSelector } from '@/redux/store/hooks';
+import { TECH } from '@/utils/appConstant';
 
 type AssignWorkModalProps = {
   isVisible: boolean;
@@ -53,6 +55,7 @@ const AssignWorkModal = ({
     border: '#e2e8f0',
     primary: PRIMARY,
   };
+  const user = useAppSelector(state => state.auth.user);
 
   const item = dataItem?.data;
   const dataDropdown: any =
@@ -62,6 +65,15 @@ const AssignWorkModal = ({
         value: item.name,
       };
     });
+
+  const isTech = user?.role === TECH;
+
+  const techDataDropdown = [
+    {
+      id: user?.id,
+      value: user?.name,
+    },
+  ];
 
   return (
     <View>
@@ -157,7 +169,7 @@ const AssignWorkModal = ({
               <Dropdown
                 label="Kỹ thuật viên thực hiện"
                 value={technicians?.value}
-                options={dataDropdown}
+                options={isTech ? techDataDropdown : dataDropdown}
                 onChange={setTechnicians}
               />
 

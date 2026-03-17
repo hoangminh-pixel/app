@@ -39,21 +39,37 @@ const useDetailRequest = () => {
         asset_id: detailRequestData?.asset_id?.id,
         asset_category_level1_id:
           detailRequestData?.asset_category_level1_id?.id,
-        cause_id: detailRequestData?.cause_id?.id,
-        zone_id: detailRequestData?.zone_id?.id,
-        mro_location_id: detailRequestData?.mro_location_id?.id,
+        cause_id: detailRequestData?.cause_id?.id
+          ? detailRequestData?.cause_id?.id
+          : null,
+        zone_id: detailRequestData?.zone_id?.id
+          ? detailRequestData?.zone_id?.id
+          : null,
+        mro_location_id: detailRequestData?.mro_location_id?.id
+          ? detailRequestData?.mro_location_id?.id
+          : null,
         description: detailRequestData?.describe?.describe ?? '',
         note_employee_request:
           detailRequestData?.request_employee_id?.name ?? '',
-        receive_department_id: detailRequestData?.receive_department_id?.id,
-        request_department_id: detailRequestData?.request_department_id?.id,
-        priority_id: detailRequestData?.priority_id?.id,
+        receive_department_id: detailRequestData?.receive_department_id?.id
+          ? detailRequestData?.receive_department_id?.id
+          : null,
+        request_department_id: detailRequestData?.request_department_id?.id
+          ? detailRequestData?.request_department_id?.id
+          : null,
+        priority_id: detailRequestData?.priority_id?.id
+          ? detailRequestData?.priority_id?.id
+          : null,
         action: action,
         state: detailRequestData?.state.state,
         title: detailRequestData?.title.title,
         reject_reason: rejectReason,
         mro_request_id: id,
       });
+
+      if (res) {
+        showSuccesToast({ title: res.message });
+      }
 
       if (res && res.code === 1) {
         showSuccesToast({ title: 'Thao tác thành công' });
@@ -114,7 +130,7 @@ const useDetailRequest = () => {
     handleShowRejectModal,
     handleHideRejectModal,
     showSkeleton,
-    handleNavigateDetailMedia
+    handleNavigateDetailMedia,
   };
 };
 
