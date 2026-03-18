@@ -87,7 +87,7 @@ export const Content = ({ data, summary, handleNavigate }: Props) => {
             <Pressable key={task.id} onPress={() => handleNavigate(task.id)}>
               <TaskItem
                 icon="work"
-                title={task.cause_id}
+                title={task.cause_id ? task.cause_id : task.name}
                 // code={task.name}
                 state={task.state}
                 status={getSateItem({ state: task.state })}
@@ -110,6 +110,7 @@ export const Content = ({ data, summary, handleNavigate }: Props) => {
               icon="work"
               // title={task.name}
               title={task.activity_code}
+              code={task.cause_id ? task.cause_id : task.name}
               state={task.state}
               status={getSateItem({ state: task.state })}
             />

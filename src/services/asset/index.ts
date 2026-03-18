@@ -49,6 +49,19 @@ export const getAssetMarkDamaged = async (payload: AssetMarkDamagedPayload) => {
   return response.data.result;
 };
 
+interface AssetMarkLostPayload {
+  access_token: string;
+  asset_id: number;
+}
+export const getAssetMarkLost = async (payload: AssetMarkLostPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_asset_mark_lost`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
 interface CreateAssetMarkDamagedPayload {
   access_token: string;
   asset_id: number;
@@ -62,6 +75,61 @@ export const createAssetMarkDamaged = async (
 ) => {
   const response = await axiosInstance.post(
     `${ASM_PREFIX}/create_asset_mark_damaged`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface CreateAssetMarkLostPayload {
+  access_token: string;
+  asset_id: number;
+  mark_lost_date: string;
+  description: string;
+  lines: any[];
+  business_unit_id: number;
+}
+export const createAssetMarkLost = async (
+  payload: CreateAssetMarkLostPayload,
+) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/create_asset_mark_lost`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface ReportHomePayload {
+  access_token: string;
+  company_id: number;
+  business_unit_id: number;
+}
+export const getReportHome = async (payload: ReportHomePayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_report_by_state`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+export const getGroupReport = async (payload: ReportHomePayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_report_by_type`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface BusinessUnitPayload {
+  access_token: string;
+  key_word: string;
+}
+export const getBusinessUnit = async (payload: BusinessUnitPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_business_unit`,
     payload,
   );
 

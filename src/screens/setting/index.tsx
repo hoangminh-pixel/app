@@ -30,6 +30,15 @@ export default function SettingScreen() {
       showErrorToast({});
     }
   };
+
+  const handleChangeFunc = async () => {
+    try {
+      await removeCurrentModuleStorage();
+      dispatch(setCurrentModule(null));
+    } catch (error) {
+      showErrorToast({});
+    }
+  };
   return (
     <BasePage
       showBack
@@ -40,6 +49,8 @@ export default function SettingScreen() {
       <SizeBox height={16} />
 
       <View style={styles.footer}>
+        <ChangeFuncButton onPress={handleChangeFunc} />
+        <SizeBox height={12} />
         <LogoutButton onPress={handleLogOut} />
 
         <Text style={styles.footerText}>
@@ -63,6 +74,21 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({
     <Pressable style={styles.button} onPress={onPress}>
       <View style={styles.content}>
         <Icon name="logout" size={20} color="#fff" />
+
+        <Text style={styles.text}>{title}</Text>
+      </View>
+    </Pressable>
+  );
+};
+
+const ChangeFuncButton: React.FC<LogoutButtonProps> = ({
+  onPress,
+  title = 'Thay đổi chức năng',
+}) => {
+  return (
+    <Pressable style={styles.button} onPress={onPress}>
+      <View style={styles.content}>
+        <Icon name="swap-horiz" size={20} color="#fff" />
 
         <Text style={styles.text}>{title}</Text>
       </View>

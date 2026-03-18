@@ -84,7 +84,7 @@ export default function MarkBrokenScreen() {
       {/* SUBMIT */}
       <TouchableOpacity style={styles.submitBtn} onPress={handleSaveBroken}>
         <Icon name="save" size={20} color="white" />
-        <Text style={styles.submitText}>Lưu thông báo hỏng</Text>
+        <Text style={styles.submitText}>Báo hỏng</Text>
       </TouchableOpacity>
     </BasePage>
   );

@@ -50,6 +50,12 @@ const ASMBottomTab = () => {
       })}
     >
       <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ tabBarLabel: 'Trang chủ' }}
+      />
+      
+      <Tab.Screen
         name="Asset"
         component={AssetScreen}
         options={{ tabBarLabel: 'Tài sản' }}
@@ -59,12 +65,6 @@ const ASMBottomTab = () => {
         name="Inventory"
         component={InventoryScreen}
         options={{ tabBarLabel: 'Kho' }}
-      />
-
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ tabBarLabel: 'Trang chủ' }}
       />
 
       <Tab.Screen

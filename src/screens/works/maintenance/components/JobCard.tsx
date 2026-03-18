@@ -31,7 +31,7 @@ export const JobCard = (props: Props) => {
     const isExist = assignList.some(emp => emp.id === execute.id);
 
     if (!isExist) {
-      staff.push({
+      staff.unshift({
         id: execute.id,
         name: execute.name,
       });

@@ -130,10 +130,7 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
         </View>
       </Pressable>
 
-      <View
-        style={{ display: isShow ? 'flex' : 'none' }}
-        pointerEvents={!isDoneButton ? 'none' : 'auto'}
-      >
+      <View style={{ display: isShow ? 'flex' : 'none' }}>
         <SizeBox height={8} />
         {/* Guide */}
         {/* <TouchableOpacity>
@@ -167,14 +164,21 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
 
         {/* TYPE RENDER */}
         {type === 'passfail' && (
-          <ToggleSection
-            pass={pass}
-            fail={fail}
-            handleChangePassFail={handleChangePassFail}
-          />
+          <View pointerEvents={!isDoneButton ? 'none' : 'auto'}>
+            <ToggleSection
+              pass={pass}
+              fail={fail}
+              handleChangePassFail={handleChangePassFail}
+            />
+          </View>
         )}
         {type === 'text' && (
-          <EditSection value={checklistDesc} onChange={onChecklistDescChange} />
+          <View pointerEvents={!isDoneButton ? 'none' : 'auto'}>
+            <EditSection
+              value={checklistDesc}
+              onChange={onChecklistDescChange}
+            />
+          </View>
         )}
         {type === 'picture' && (
           <MediaSection
@@ -185,15 +189,18 @@ function ChecklistItem({ type, index, item, isDoneButton }: Props) {
             openLibrary={openLibrary}
             handleNavigateDetailMedia={handleNavigateDetailMedia}
             isRemoveMedia={isRemoveMedia}
+            isDoneButton={isDoneButton}
           />
         )}
         {type === 'measure' && (
-          <MeasureSection
-            value={measure}
-            onChange={onMeasureChange}
-            from={item?.tolerance_min?.tolerance_min}
-            to={item?.tolerance_max?.tolerance_max}
-          />
+          <View pointerEvents={!isDoneButton ? 'none' : 'auto'}>
+            <MeasureSection
+              value={measure}
+              onChange={onMeasureChange}
+              from={item?.tolerance_min?.tolerance_min}
+              to={item?.tolerance_max?.tolerance_max}
+            />
+          </View>
         )}
         {isDoneButton && (
           <Fragment>
@@ -342,6 +349,7 @@ function MediaSection({
   openLibrary,
   handleNavigateDetailMedia,
   isRemoveMedia,
+  isDoneButton,
 }: {
   openCamera: () => void;
   openPhoto: () => void;
@@ -356,10 +364,14 @@ function MediaSection({
     type: string;
   }) => void;
   isRemoveMedia: boolean;
+  isDoneButton: boolean;
 }) {
   return (
     <View>
-      <View style={{ flexDirection: 'row', gap: 16 }}>
+      <View
+        style={{ flexDirection: 'row', gap: 16 }}
+        pointerEvents={!isDoneButton ? 'none' : 'auto'}
+      >
         <TouchableOpacity onPress={openCamera}>
           <Icon name="videocam" size={22} color="#94a3b8" />
         </TouchableOpacity>

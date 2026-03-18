@@ -27,6 +27,8 @@ export type MainStackParamList = {
 export type AssetStackParamList = {
   Home: undefined;
   BottomTab: undefined;
+  SettingScreen: undefined;
   AssetDetailScreen: { id: number };
   MarkBrokenScreen: { id: number };
+  MarkLostScreen: { id: number };
 };

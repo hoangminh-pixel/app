@@ -90,8 +90,7 @@ const useAssetDetail = () => {
     }
     if (type === 'loss') {
       if (assetData?.mark_able) {
-        //TODO LossScreen
-        // navigation.navigate('MarkBrokenScreen');
+        navigation.navigate('MarkLostScreen', { id: assetData.id });
       } else {
         showErrorToast({
           content: `Chỉ được đánh dấu mất tài sản ở trạng thái chưa sử dụng và đang sử dụng thuộc đơn vị ${user?.business_unit_id.name}. Vui lòng kiểm tra lại thông tin.`,
