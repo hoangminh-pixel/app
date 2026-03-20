@@ -1,3 +1,5 @@
+import { InventoringRes } from '@/asmScreens/inventory/inventorying/hooks/useInventorying';
+
 export type AuthStackParamList = {
   Login: undefined;
 };
@@ -31,4 +33,21 @@ export type AssetStackParamList = {
   AssetDetailScreen: { id: number };
   MarkBrokenScreen: { id: number };
   MarkLostScreen: { id: number };
+  InventoryDetailScreen: { item: InventoringRes; inventoried: boolean };
+  ScanQrInventoryScreen: { locationId: number; inventoryId: number };
+  InventorySummaryScreen: {
+    locationId: number;
+    inventoryId: number;
+    inventoried: boolean;
+  };
+  InventoryResultScreen: {
+    locationId: number;
+    inventoryId: number;
+    indexType: number;
+  };
+  InventoryResultDetailScreen: {
+    locationId: number;
+    inventoryId: number;
+    assetId: number;
+  };
 };

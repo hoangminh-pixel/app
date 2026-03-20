@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RootRequest } from '../../types';
 import { getListMroRequest } from '@/services/request';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
@@ -24,13 +24,13 @@ const useRepairRequest = () => {
     handleGetListMroRequest(1);
   }, []);
 
-  useEffect(() => {
-    appEvent.on('reload_repair_screen', handleReloadwhenBack);
+  // useEffect(() => {
+  //   appEvent.on('reload_repair_screen', handleReloadwhenBack);
 
-    return () => {
-      appEvent.off('reload_repair_screen', handleReloadwhenBack);
-    };
-  }, []);
+  //   return () => {
+  //     appEvent.off('reload_repair_screen', handleReloadwhenBack);
+  //   };
+  // }, []);
 
   const handleGetListMroRequest = async (pageNumber = 1, isRefresh = false) => {
     if (loading) return;
@@ -89,6 +89,20 @@ const useRepairRequest = () => {
     }
   };
 
+  const handlerRef = useRef(handleReloadwhenBack);
+
+  useEffect(() => {
+    handlerRef.current = handleReloadwhenBack;
+  });
+
+  useEffect(() => {
+    const listener = () => handlerRef.current();
+    appEvent.on('reload_repair_screen', listener);
+    return () => {
+      appEvent.off('reload_repair_screen', listener);
+    };
+  }, []);
+
   return {
     listRequest,
     loading,
@@ -98,7 +112,7 @@ const useRepairRequest = () => {
     hasMore,
     navigation,
     handleReloadwhenBack,
-    showSkeleton
+    showSkeleton,
   };
 };
 

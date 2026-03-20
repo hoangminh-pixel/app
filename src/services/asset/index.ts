@@ -135,3 +135,171 @@ export const getBusinessUnit = async (payload: BusinessUnitPayload) => {
 
   return response.data.result;
 };
+
+interface InventoryPayload {
+  access_token: string;
+  company_id: number;
+  business_unit_id: number;
+  key_word: string;
+  page: number;
+  items_per_page: number;
+  from_date: string;
+  to_date: string;
+  inventory_type: string | null;
+}
+export const getInventorying = async (payload: InventoryPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_inventorying`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+export const getInventoried = async (payload: InventoryPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_inventoried`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface InventoryDetailPayload {
+  access_token: string;
+  inventory_id: number;
+}
+export const getInventoryDetail = async (payload: InventoryDetailPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_locations`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface AssetsByLocationPayload {
+  access_token: string;
+  inventory_id: number;
+  location_id: number;
+  key_word: string;
+}
+export const getAssetsByLocation = async (payload: AssetsByLocationPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_assets_by_location`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface ScanQrCodeInfoPayload {
+  access_token: string;
+  inventory_id: number;
+  location_id: number;
+  asset_code: string;
+}
+export const getScanQrCodeInfo = async (payload: ScanQrCodeInfoPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_asset_user_by_qrcode`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface InventoryLinePayload {
+  access_token: string;
+  inventory_line_id: number;
+}
+export const getInventoryLine = async (payload: InventoryLinePayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_inventory_line`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface UpdateInventoryLinePayload {
+  access_token: string;
+  inventory_line_id: number;
+  quantity_unused: number;
+  quantity_using: number;
+  quantity_damaged: number;
+  quantity_liquidation: number;
+}
+export const updateInventoryLine = async (
+  payload: UpdateInventoryLinePayload,
+) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/update_inventory_line`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface DiffAssetsPayload {
+  access_token: string;
+  inventory_id: number;
+  location_id: number;
+  key_word: string;
+  qty_asset: any[];
+  asset_user: any[];
+  location: any[];
+  asset_type: any[];
+  is_inventoried: boolean;
+}
+export const getDiffAssets = async (payload: DiffAssetsPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_diff_asset`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface InventoryResultPayload {
+  access_token: string;
+  inventory_id: number;
+  location_id: number;
+  type: number;
+  is_inventoried: boolean;
+}
+export const getInventoryResult = async (payload: InventoryResultPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_result_inventory`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface DetailInventoryPayload {
+  access_token: string;
+  inventory_id: number;
+  location_id: number;
+  asset_id: number;
+}
+export const getDetailInventory = async (payload: DetailInventoryPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/get_detail_inventory`,
+    payload,
+  );
+
+  return response.data.result;
+};
+
+interface CompleteInventoryPayload {
+  access_token: string;
+  inventory_id: number;
+}
+export const completeInventory = async (payload: CompleteInventoryPayload) => {
+  const response = await axiosInstance.post(
+    `${ASM_PREFIX}/complete_inventory`,
+    payload,
+  );
+
+  return response.data.result;
+};

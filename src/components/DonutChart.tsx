@@ -25,7 +25,21 @@ const DonutChart = ({
               item: { value: number; color: ColorValue | undefined },
               index: React.Key | null | undefined,
             ) => {
-              const segmentLength = (item.value / total) * circumference;
+              // let segmentLength;
+
+              // if (index === data.length - 1) {
+              //   segmentLength = circumference - cumulativeLength;
+              // } else {
+              //   segmentLength = Math.round(
+              //     (item.value / total) * circumference,
+              //   );
+              // }
+
+              // const segmentLength = (item.value / total) * circumference;
+
+              const segmentLength = Math.round(
+                (item.value / total) * circumference,
+              );
 
               const circle = (
                 <Circle
@@ -35,11 +49,12 @@ const DonutChart = ({
                   r={radius}
                   stroke={item.color}
                   strokeWidth={strokeWidth}
-                  strokeDasharray={`${segmentLength} ${
+                  strokeDasharray={`${segmentLength + 0.5} ${
                     circumference - segmentLength
                   }`}
                   strokeDashoffset={-cumulativeLength}
                   fill="none"
+                  strokeLinecap="butt"
                 />
               );
 

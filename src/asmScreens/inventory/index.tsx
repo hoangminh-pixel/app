@@ -1,25 +1,50 @@
-// src/screens/inventory/index.tsx
+import { BasePage } from '@/components';
+import { PRIMARY } from '@/utils/color';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import InventoryingScreen from './inventorying';
+import InventoriedScreen from './inventoried';
 
-const InventoryScreen = () => {
+const Tab = createMaterialTopTabNavigator();
+
+const WorkTopTabs = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Màn hình Kho</Text>
-    </View>
+    <BasePage paddingHorizontal={0} title="Kiểm kê">
+      <Tab.Navigator
+        screenOptions={{
+          lazy: true,
+          swipeEnabled: false,
+          tabBarActiveTintColor: PRIMARY,
+          tabBarInactiveTintColor: 'gray',
+          tabBarIndicatorStyle: {
+            backgroundColor: PRIMARY,
+          },
+        }}
+      >
+        <Tab.Screen
+          name={'Inventorying'}
+          component={InventoryingScreen}
+          options={{
+            title: 'Đang kiểm kê',
+            tabBarLabelStyle: {
+              fontSize: 14,
+              fontWeight: '700',
+            },
+          }}
+        />
+        <Tab.Screen
+          name={'Inventoried'}
+          component={InventoriedScreen}
+          options={{
+            title: 'Đã kiểm kê',
+            tabBarLabelStyle: {
+              fontSize: 14,
+              fontWeight: '700',
+            },
+          }}
+        />
+      </Tab.Navigator>
+    </BasePage>
   );
 };
-
-export default InventoryScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '600',
-  },
-});
+export default WorkTopTabs;

@@ -39,26 +39,26 @@ const ReportScreen = () => {
             <Legend
               color="#10b981"
               title="Đang sử dụng"
-              value={dataHome?.using.quantity ?? 0}
-              percent={dataHome?.using.percent ?? 0}
+              value={dataHome?.using?.quantity ?? 0}
+              percent={dataHome?.using?.percent ?? 0}
             />
             <Legend
               color="#3b82f6"
               title="Chưa sử dụng"
-              value={dataHome?.unused.quantity ?? 0}
-              percent={dataHome?.unused.percent ?? 0}
+              value={dataHome?.unused?.quantity ?? 0}
+              percent={dataHome?.unused?.percent ?? 0}
             />
             <Legend
               color="#f59e0b"
               title="Hỏng, sửa chữa"
-              value={dataHome?.damaged.quantity ?? 0}
-              percent={dataHome?.damaged.percent ?? 0}
+              value={dataHome?.damaged?.quantity ?? 0}
+              percent={dataHome?.damaged?.percent ?? 0}
             />
             <Legend
               color="#ef4444"
               title="Mất, huỷ, thanh lý"
-              value={dataHome?.lost.quantity ?? 0}
-              percent={dataHome?.lost.percent ?? 0}
+              value={dataHome?.lost?.quantity ?? 0}
+              percent={dataHome?.lost?.percent ?? 0}
             />
           </View>
         </View>

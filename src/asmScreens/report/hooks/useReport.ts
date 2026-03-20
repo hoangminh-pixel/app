@@ -66,22 +66,23 @@ export const useReport = () => {
   const donutData = [
     {
       label: 'Đang sử dụng',
-      value: dataHome?.using.quantity,
+      
+      value: dataHome?.using?.quantity ?? 0,
       color: '#10b981',
     },
     {
       label: 'Chưa sử dụng',
-      value: dataHome?.unused.quantity,
+      value: dataHome?.unused?.quantity ?? 0,
       color: '#3b82f6',
     },
     {
       label: 'Hỏng, sửa chữa',
-      value: dataHome?.damaged.quantity,
+      value: dataHome?.damaged?.quantity ?? 0,
       color: '#f59e0b',
     },
     {
       label: 'Mất, huỷ, thanh lý',
-      value: dataHome?.lost.quantity,
+      value: dataHome?.lost?.quantity ?? 0,
       color: '#ef4444',
     },
   ];

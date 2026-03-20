@@ -1,4 +1,3 @@
-import Icon from '@react-native-vector-icons/material-icons';
 import React, { useState } from 'react';
 import {
   FlatList,
@@ -10,24 +9,17 @@ import {
 } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import AppInput from './AppInput';
-
-interface BusinessUnit {
-  id: number;
-  name: string;
-  business_unit: {
-    id: number;
-    name: string;
-  }[];
-}
+import { AssetByLocation } from '@/asmScreens/scanQrInventory/hooks/useScanQrInventory';
+import { screenHeight } from '@/utils/appConstant';
 
 interface Props {
   visible: boolean;
-  data: BusinessUnit[];
+  data: AssetByLocation[];
   onClose: () => void;
-  onSelect: (item: any) => void;
+  onSelect: (item: AssetByLocation) => void;
 }
 
-export default function BottomSheetBusiness({
+export default function BottomSheetAssetLocation({
   visible,
   data,
   onClose,
@@ -35,18 +27,18 @@ export default function BottomSheetBusiness({
 }: Props) {
   const [search, setSearch] = useState('');
 
-  const filterData = data
-    .map(group => ({
-      ...group,
-      business_unit: group.business_unit.filter(item =>
-        item.name.toLowerCase().includes(search.toLowerCase()),
-      ),
-    }))
-    .filter(
-      group =>
-        group.name.toLowerCase().includes(search.toLowerCase()) ||
-        group.business_unit.length > 0,
-    );
+  // const filterData = data
+  //   .map(group => ({
+  //     ...group,
+  //     business_unit: group.business_unit.filter(item =>
+  //       item.name.toLowerCase().includes(search.toLowerCase()),
+  //     ),
+  //   }))
+  //   .filter(
+  //     group =>
+  //       group.name.toLowerCase().includes(search.toLowerCase()) ||
+  //       group.business_unit.length > 0,
+  //   );
 
   return (
     <Modal
@@ -66,7 +58,7 @@ export default function BottomSheetBusiness({
 
             {/* header */}
             <View style={styles.header}>
-              <Text style={styles.title}>Đơn vị quản lý</Text>
+              <Text style={styles.title}>Danh sách tài sản</Text>
               <Pressable onPress={onClose}>
                 <Text style={styles.cancel}>Hủy</Text>
               </Pressable>
@@ -86,43 +78,40 @@ export default function BottomSheetBusiness({
               />
             </View>
 
-            {/* list */}
             <FlatList
-              data={filterData}
-              keyExtractor={item => item.id.toString()}
+              data={data}
+              keyExtractor={item => item.asset_id.toString()}
               contentContainerStyle={{ padding: 16 }}
               renderItem={({ item }) => (
-                <View style={{ marginBottom: 16 }}>
-                  {/* group */}
-                  <View style={styles.groupRow}>
-                    <Icon name="business" size={20} color="#2563eb" />
-                    <Text style={styles.groupTitle}>{item.name}</Text>
-                  </View>
+                <Pressable
+                  onPress={() => {
+                    onClose();
+                    onSelect(item);
+                  }}
+                >
+                  <View
+                    style={{
+                      marginBottom: 16,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <View
+                      style={[styles.groupRow, { alignItems: 'flex-start' }]}
+                    >
+                      <Text style={styles.groupTitle}>{item.asset_code}</Text>
+                      <Text style={styles.groupTitle}>{item.asset_name}</Text>
+                    </View>
 
-                  {/* children */}
-                  <View style={styles.childContainer}>
-                    {item.business_unit?.map(child => (
-                      <Pressable
-                        key={child.id}
-                        style={styles.childItem}
-                        onPress={() => {
-                          const data = {
-                            id: item.id,
-                            name: item.name,
-                            business_unit: {
-                              id: child.id,
-                              name: child.name,
-                            },
-                          };
-                          onSelect(data);
-                          onClose();
-                        }}
-                      >
-                        <Text style={styles.childText}>{child.name}</Text>
-                      </Pressable>
-                    ))}
+                    <View style={styles.childContainer}>
+                      <View style={styles.childItem}>
+                        <Text style={styles.childText}>
+                          {item.qty_inventoried}/{item.total_inventory}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
+                </Pressable>
               )}
             />
           </View>
@@ -147,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    maxHeight: 400,
+    height: screenHeight - 200,
   },
 
   handle: {
@@ -178,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   groupRow: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 6,
   },

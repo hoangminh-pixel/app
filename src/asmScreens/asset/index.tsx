@@ -33,6 +33,7 @@ export default function AssetListScreen() {
               value={search}
               onChangeText={setSearch}
               style={styles.input}
+              placeholderTextColor={'#888'}
             />
           </View>
 
